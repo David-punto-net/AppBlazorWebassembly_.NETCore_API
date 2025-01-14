@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Components;
 using Orders.Frontend.Repositories;
 using Orders.Shared.Entities;
 
-namespace Orders.Frontend.Pages.Countries
+namespace Orders.Frontend.Pages.Categories
 {
-    public partial class CountryCreate
+    public partial class CategoryCreate
     {
-        private Country country = new();
+        private Category category = new();
 
-        private CountryForm? countryForm;
+        private CategoryForm? categoryForm;
         private bool regreso = false;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -17,9 +17,9 @@ namespace Orders.Frontend.Pages.Countries
 
         private async Task CreateAsync()
         {
-            if (!regreso) 
+            if (!regreso)
             {
-                var responseHttp = await Repository.PostAsync("/api/countries", country);
+                var responseHttp = await Repository.PostAsync("/api/categories", category);
                 if (responseHttp.Error)
                 {
                     var message = await responseHttp.GetErrorMessageAsync();
@@ -27,7 +27,7 @@ namespace Orders.Frontend.Pages.Countries
                     return;
                 }
 
-                NavigationManager.NavigateTo("/countries");
+                NavigationManager.NavigateTo("/categories");
 
                 var toast = SweetAlertService.Mixin(new SweetAlertOptions
                 {
@@ -45,9 +45,9 @@ namespace Orders.Frontend.Pages.Countries
         {
             regreso = true;
 
-            if (country.Name == null)
+            if (category.Name == null)
             {
-                NavigationManager.NavigateTo("/countries");
+                NavigationManager.NavigateTo("/categories");
                 return;
             }
 
@@ -64,10 +64,7 @@ namespace Orders.Frontend.Pages.Countries
                 return;
             }
 
-            NavigationManager.NavigateTo("/countries");
-
+            NavigationManager.NavigateTo("/categories");
         }
-
-
     }
 }
