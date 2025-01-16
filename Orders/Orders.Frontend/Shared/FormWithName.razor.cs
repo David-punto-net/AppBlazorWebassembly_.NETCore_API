@@ -1,6 +1,7 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Routing;
 using Orders.Shared.Interfaces;
 
 namespace Orders.Frontend.Shared
@@ -24,6 +25,26 @@ namespace Orders.Frontend.Shared
         {
             editContext = new(Model);
         }
+
+        //private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+        //{
+        //            if (Model.Name != null)
+        //            {
+        //                var result = await SweetAlertService.FireAsync(new SweetAlertOptions
+        //                {
+        //                    Title = "Confirmación",
+        //                    Text = "¿Deseas abandonar la página y perder los cambios?",
+        //                    Icon = SweetAlertIcon.Warning,
+        //                    ShowCancelButton = true
+        //                });
+        //                var confirm = !string.IsNullOrEmpty(result.Value);
+        //                if (!confirm)
+        //                {
+        //                    context.PreventNavigation();
+        //                }
+        //            }
+        //}
+
 
     }
 }
