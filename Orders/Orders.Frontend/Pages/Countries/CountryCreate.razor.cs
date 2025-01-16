@@ -1,6 +1,7 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using Orders.Frontend.Repositories;
+using Orders.Frontend.Shared;
 using Orders.Shared.Entities;
 
 namespace Orders.Frontend.Pages.Countries
@@ -9,7 +10,8 @@ namespace Orders.Frontend.Pages.Countries
     {
         private Country country = new();
 
-        private CountryForm? countryForm;
+        private FormWithName<Country>? countryForm;
+
         private bool regreso = false;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
