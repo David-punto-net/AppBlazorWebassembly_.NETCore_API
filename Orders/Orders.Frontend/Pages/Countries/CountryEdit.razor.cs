@@ -12,6 +12,8 @@ namespace Orders.Frontend.Pages.Countries
 
         private FormWithName<Country>? countryForm;
 
+        private bool regreso = false;
+
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
@@ -43,29 +45,36 @@ namespace Orders.Frontend.Pages.Countries
 
         private async Task UpdateAsync()
         {
-            var responseHttp = await Repository.PutAsync("/api/countries", country);
-            if (responseHttp.Error)
+            if (!regreso)
             {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message);
-                return;
+                countryForm!.FormPressCreate = true;
+
+                var responseHttp = await Repository.PutAsync("/api/countries", country);
+                if (responseHttp.Error)
+                {
+                    var message = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", message);
+                    return;
+                }
+
+                NavigationManager.NavigateTo("/countries");
+
+                var toast = SweetAlertService.Mixin(new SweetAlertOptions
+                {
+                    Toast = true,
+                    Position = SweetAlertPosition.BottomEnd,
+                    ShowConfirmButton = true,
+                    Timer = 3000
+                });
+
+                await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro modificado con éxito.");
             }
-
-            NavigationManager.NavigateTo("/countries");
-
-            var toast = SweetAlertService.Mixin(new SweetAlertOptions
-            {
-                Toast = true,
-                Position = SweetAlertPosition.BottomEnd,
-                ShowConfirmButton = true,
-                Timer = 3000
-            });
-
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro modificado con éxito.");
         }
 
         private void Return()
         {
+            regreso = true;
+            countryForm!.FormPressCreate = false;
             NavigationManager.NavigateTo("/countries");
         }
     }

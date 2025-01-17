@@ -1,6 +1,5 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
-using Orders.Frontend.Pages.Countries;
 using Orders.Frontend.Repositories;
 using Orders.Frontend.Shared;
 using Orders.Shared.Entities;
@@ -12,6 +11,8 @@ namespace Orders.Frontend.Pages.Categories
         private Category? category;
 
         private FormWithName<Category>? categoryForm;
+
+        private bool regreso = false;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
@@ -43,29 +44,36 @@ namespace Orders.Frontend.Pages.Categories
 
         private async Task UpdateAsync()
         {
-            var responseHttp = await Repository.PutAsync("/api/categories", category);
-            if (responseHttp.Error)
+            if (!regreso)
             {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message);
-                return;
+                categoryForm!.FormPressCreate = true;
+
+                var responseHttp = await Repository.PutAsync("/api/categories", category);
+                if (responseHttp.Error)
+                {
+                    var message = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", message);
+                    return;
+                }
+
+                NavigationManager.NavigateTo("/categories");
+
+                var toast = SweetAlertService.Mixin(new SweetAlertOptions
+                {
+                    Toast = true,
+                    Position = SweetAlertPosition.BottomEnd,
+                    ShowConfirmButton = true,
+                    Timer = 3000
+                });
+
+                await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro modificado con éxito.");
             }
-
-            NavigationManager.NavigateTo("/categories");
-
-            var toast = SweetAlertService.Mixin(new SweetAlertOptions
-            {
-                Toast = true,
-                Position = SweetAlertPosition.BottomEnd,
-                ShowConfirmButton = true,
-                Timer = 3000
-            });
-
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro modificado con éxito.");
         }
 
         private void Return()
         {
+            regreso = true;
+            categoryForm!.FormPressCreate = false;
             NavigationManager.NavigateTo("/categories");
         }
     }

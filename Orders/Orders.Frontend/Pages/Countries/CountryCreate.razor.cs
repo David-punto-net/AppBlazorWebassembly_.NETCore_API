@@ -19,8 +19,10 @@ namespace Orders.Frontend.Pages.Countries
 
         private async Task CreateAsync()
         {
-            if (!regreso) 
+            if (!regreso)
             {
+                countryForm!.FormPressCreate = true;
+
                 var responseHttp = await Repository.PostAsync("/api/countries", country);
                 if (responseHttp.Error)
                 {
@@ -46,30 +48,8 @@ namespace Orders.Frontend.Pages.Countries
         private async Task Return()
         {
             regreso = true;
-
-            if (country.Name == null)
-            {
-                NavigationManager.NavigateTo("/countries");
-                return;
-            }
-
-            var result = await SweetAlertService.FireAsync(new SweetAlertOptions
-            {
-                Title = "Confirmación",
-                Text = "¿Deseas abandonar la página y perder los cambios?",
-                Icon = SweetAlertIcon.Warning,
-                ShowCancelButton = true
-            });
-            var confirm = string.IsNullOrEmpty(result.Value);
-            if (confirm)
-            {
-                return;
-            }
-
+            countryForm!.FormPressCreate = false;
             NavigationManager.NavigateTo("/countries");
-
         }
-
-
     }
 }

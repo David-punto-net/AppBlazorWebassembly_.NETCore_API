@@ -11,6 +11,7 @@ namespace Orders.Frontend.Pages.Categories
         private Category category = new();
 
         private FormWithName<Category>? categoryForm;
+
         private bool regreso = false;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -20,6 +21,8 @@ namespace Orders.Frontend.Pages.Categories
         {
             if (!regreso)
             {
+                categoryForm!.FormPressCreate = true;
+
                 var responseHttp = await Repository.PostAsync("/api/categories", category);
                 if (responseHttp.Error)
                 {
@@ -45,26 +48,7 @@ namespace Orders.Frontend.Pages.Categories
         private async Task Return()
         {
             regreso = true;
-
-            if (category.Name == null)
-            {
-                NavigationManager.NavigateTo("/categories");
-                return;
-            }
-
-            var result = await SweetAlertService.FireAsync(new SweetAlertOptions
-            {
-                Title = "Confirmación",
-                Text = "¿Deseas abandonar la página y perder los cambios?",
-                Icon = SweetAlertIcon.Warning,
-                ShowCancelButton = true
-            });
-            var confirm = string.IsNullOrEmpty(result.Value);
-            if (confirm)
-            {
-                return;
-            }
-
+            categoryForm!.FormPressCreate = false;
             NavigationManager.NavigateTo("/categories");
         }
     }
