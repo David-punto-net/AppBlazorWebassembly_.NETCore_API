@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.QuickGrid;
 
 namespace Orders.Frontend.Shared
 {
@@ -11,6 +12,7 @@ namespace Orders.Frontend.Shared
         [EditorRequired]
         [Parameter] public RenderFragment Body { get; set; } = null!;
 
-        [EditorRequired, Parameter] public List<Titem> MyList { get; set; } = null!;
+        [EditorRequired, Parameter] public IQueryable<Titem> MyList { get; set; } = null!;
+
     }
 }

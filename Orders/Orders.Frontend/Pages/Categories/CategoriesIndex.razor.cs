@@ -1,5 +1,6 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.QuickGrid;
 using Orders.Frontend.Repositories;
 using Orders.Shared.Entities;
 
@@ -10,7 +11,13 @@ namespace Orders.Frontend.Pages.Categories
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-        public List<Category>? Categories { get; set; }
+        public IQueryable<Category>? Categories { get; set; }
+        public IQueryable<Category>? CategoriesMaster { get; set; }
+
+        private PaginationState PaginationGrid = new PaginationState { ItemsPerPage = 10 };
+
+
+        private string nameFilter = "";
 
         protected override async Task OnInitializedAsync()
         {
@@ -27,7 +34,8 @@ namespace Orders.Frontend.Pages.Categories
                 return;
             }
 
-            Categories = responseHttp.Response;
+            Categories = responseHttp.Response!.AsQueryable();
+            CategoriesMaster = Categories;
         }
 
         private async Task DeleteAsync(Category category)
@@ -73,5 +81,27 @@ namespace Orders.Frontend.Pages.Categories
 
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro eliminado con éxito.");
         }
+
+        private async Task Filtrar()
+        {
+            if (nameFilter != "")
+            {
+                Categories = CategoriesMaster!.Where(c => c.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
+            }
+            else
+            {
+                Categories = CategoriesMaster;
+            }
+
+        }
+
+        private async Task Refrescar()
+        {
+            nameFilter = "";
+     
+           Categories = CategoriesMaster!.Where(c => c.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
+           
+        }
+
     }
 }
