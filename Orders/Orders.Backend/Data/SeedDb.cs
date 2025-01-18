@@ -1,5 +1,4 @@
-﻿
-using Orders.Shared.Entities;
+﻿using Orders.Shared.Entities;
 
 namespace Orders.Backend.Data
 {
@@ -14,22 +13,38 @@ namespace Orders.Backend.Data
 
         public async Task SeedAsync()
         {
-
             await _context.Database.EnsureCreatedAsync();
-            await CheckCountryAsync();
+            await CheckCountriesAsync();
             await CheckCategoryAsync();
 
             return;
         }
 
-        private async Task CheckCountryAsync()
+        private async Task CheckCountriesAsync()
         {
             if (!_context.Countries.Any())
             {
-                _context.Countries.Add(new Country { Name = "Chile" });
-                await _context.SaveChangesAsync();
-            }
+                _context.Countries.Add(new Country
+                {
+                    Name = "Chile",
+                    States =
+                    [  
+                        new State()
+                        {
+                            Name = "Región del Biobío",
+                                Cities = 
+                                [
+                                    new() { Name = "Concepción" },
+                                    new() { Name = "Tomé" },
+                                    new() { Name = "Talcahuano" },
+                                ]
+                        },    
+                     ]
+                  });
+             }
+            await _context.SaveChangesAsync();
         }
+
         private async Task CheckCategoryAsync()
         {
             if (!_context.Categories.Any())
