@@ -1,18 +1,21 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.QuickGrid;
+using Microsoft.AspNetCore.Components;
 using Orders.Frontend.Repositories;
 using Orders.Shared.Entities;
+using System.Net;
 
-namespace Orders.Frontend.Pages.Countries
+namespace Orders.Frontend.Pages.States
 {
-    public partial class CountriesIndex
+    public partial class StateDetails
     {
+        private State? state;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-        public IQueryable<Country>? Countries { get; set; }
-        public IQueryable<Country>? CountriesMaster { get; set; }
+        [Parameter] public int StateId { get; set; }
+        public IQueryable<City>? Cities { get; set; }
+        public IQueryable<City>? CitiessMaster { get; set; }
 
         private PaginationState PaginationGrid = new PaginationState { ItemsPerPage = 10 };
 
@@ -25,47 +28,49 @@ namespace Orders.Frontend.Pages.Countries
 
         private async Task LoadAsync()
         {
-            var responseHttp = await Repository.GetAsync<List<Country>>("api/countries");
+            var responseHttp = await Repository.GetAsync<State>($"api/states/{StateId}");
             if (responseHttp.Error)
             {
+                if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                {
+                    NavigationManager.NavigateTo($"/countries/details/{state!.CountryId}");
+                }
+
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
 
-            Countries = responseHttp.Response!.AsQueryable();
-            CountriesMaster = Countries;
+            state = responseHttp.Response;
+            Cities = state!.Cities!.AsQueryable();
+            CitiessMaster = Cities;
         }
 
-        private async Task DeleteAsync(Country country)
+        private async Task DeleteAsync(City city)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"¿Estas seguro de borrar el País {country.Name}?",
-                Icon = SweetAlertIcon.Warning,
-                ShowCancelButton = true
+                Text = $"¿Realmente deseas eliminar la Ciudad? {city.Name}",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true,
+                CancelButtonText = "No",
+                ConfirmButtonText = "Si"
             });
             var confirm = string.IsNullOrEmpty(result.Value);
             if (confirm)
             {
                 return;
             }
-
-            var responseHttp = await Repository.DeleteAsync<Country>($"/api/countries/{country.Id}");
+            var responseHttp = await Repository.DeleteAsync<State>($"/api/cities/{city.Id}");
             if (responseHttp.Error)
             {
-                if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    NavigationManager.NavigateTo("/countries");
-                }
-                else
+                if (responseHttp.HttpResponseMessage.StatusCode != HttpStatusCode.NotFound)
                 {
                     var message = await responseHttp.GetErrorMessageAsync();
                     await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                    return;
                 }
-
-                return;
             }
 
             await LoadAsync();
@@ -79,17 +84,18 @@ namespace Orders.Frontend.Pages.Countries
             });
 
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro eliminado con éxito.");
+
         }
 
         private async Task Filtrar()
         {
             if (nameFilter != "")
             {
-                Countries = CountriesMaster!.Where(c => c.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
+                Cities = CitiessMaster!.Where(c => c.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
             }
             else
             {
-                Countries = CountriesMaster;
+                Cities = CitiessMaster;
             }
 
             //await grid!.RefreshDataAsync();
@@ -99,7 +105,7 @@ namespace Orders.Frontend.Pages.Countries
         {
             nameFilter = "";
 
-            Countries = CountriesMaster!.Where(c => c.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
+            Cities = CitiessMaster!.Where(c => c.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
 
         }
     }

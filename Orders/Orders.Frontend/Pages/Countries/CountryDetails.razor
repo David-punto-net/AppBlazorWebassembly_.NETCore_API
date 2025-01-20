@@ -1,0 +1,99 @@
+﻿@page "/countries/details/{CountryId:int}"
+
+
+@if (country is null)
+{
+    <Loading />
+}
+else 
+{
+    <div class="container-fluid mb-3">
+        <div class="card mt-2">
+            <div class="card-header">
+                <i class="bi bi-globe-americas"></i> <strong>Detalle País</strong>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <h3>@country!.Name</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <p>N° de Regiones: @country.StatesNumber</p>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <a class="btn btn-dark btn-sm" href="/countries"><i class="bi bi-arrow-return-left"></i> Regresar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="container-fluid">
+
+    <div class="card mt-2">
+
+        <div class="card-header">
+            <i class="bi bi-globe-americas"></i> <strong>Regiones / Estados</strong>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                <a class="btn btn-dark btn-sm" href="/states/create/@country!.Id"><i class="bi bi-plus-circle"></i> Nueva Región</a>
+            </p>
+
+            <hr />
+
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="page-size-chooser">
+                        Items por página:
+                        <select @bind="@PaginationGrid.ItemsPerPage">
+                            <option>5</option>
+                            <option>10</option>
+                            <option>20</option>
+                            <option>50</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="search-box">
+                        <input type="search" autofocus @bind="nameFilter" placeholder="Nombre región..." />
+                         <button @onclick=@(() => Filtrar()) class="btn btn-dark btn-sm"><i class="bi bi-search"></i></button>
+                        <button @onclick=@(() => Refrescar()) class="btn btn-dark btn-sm"><i class="bi bi-arrow-clockwise"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div id="view-all">
+
+                 <GenericList MyList="States">
+                    <Body>
+
+                        <QuickGrid class="table table-striped table-hover" Items="@States" Pagination="PaginationGrid">
+                            <PropertyColumn Property="@(p => p.Name)" Sortable="true" Title="Región" Align="Align.Left" />
+                            <PropertyColumn Property="@(p => p.CitiesNumber)" Sortable="true" Title="N° de Ciudades" Align="Align.Left" />
+                            <TemplateColumn>
+                                <a class="btn btn-outline-dark btn-sm" href="/states/edit/@context.Id"><i class="bi bi-pencil-fill"></i></a>
+                                <a class="btn btn-outline-dark btn-sm" href="/states/details/@context.Id"><i class="bi bi-list-columns-reverse"></i></a>
+                                <button @onclick=@(() => DeleteAsync(context)) class="btn btn-outline-dark btn-sm"><i class="bi bi-trash3-fill"></i></button>
+                            </TemplateColumn>
+                        </QuickGrid>
+
+                        <Paginator State="PaginationGrid" />
+
+                    </Body>
+                </GenericList>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+} 
+
+

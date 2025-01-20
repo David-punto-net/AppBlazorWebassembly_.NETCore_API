@@ -51,8 +51,10 @@
 
                         <QuickGrid class="table table-striped table-hover" Items="@Countries" Pagination="PaginationGrid">
                             <PropertyColumn Property="@(p => p.Name)" Sortable="true" Title="País" Align="Align.Left" />
+                            <PropertyColumn Property="@(p => p.StatesNumber)" Sortable="true" Title="N° de Regiones" Align="Align.Left" />
                             <TemplateColumn>
                                 <a class="btn btn-outline-dark btn-sm" href="/countries/edit/@context.Id"><i class="bi bi-pencil-fill"></i></a>
+                                <a class="btn btn-outline-dark btn-sm" href="/countries/details/@context.Id"><i class="bi bi-list-columns-reverse"></i></a>
                                 <button @onclick=@(() => DeleteAsync(context)) class="btn btn-outline-dark btn-sm"><i class="bi bi-trash3-fill"></i></button>
                             </TemplateColumn>
                         </QuickGrid>

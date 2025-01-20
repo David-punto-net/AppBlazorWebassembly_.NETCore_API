@@ -1,0 +1,14 @@
+﻿@page "/states/edit/{Id:int}"
+
+<h3>Editar Región / Estado</h3>
+
+@if (state is null)
+{
+    <Loading />
+}
+else
+{
+    <FormWithName @ref="stateForm" Label="Región / Estado:" Model="state" OnValidSubmit="UpdateAsync" ReturnAction="Return" />
+
+}
+
