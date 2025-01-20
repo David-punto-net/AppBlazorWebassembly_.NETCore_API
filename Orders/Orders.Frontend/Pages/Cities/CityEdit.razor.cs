@@ -14,13 +14,13 @@ namespace Orders.Frontend.Pages.Cities
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-        [EditorRequired, Parameter] public int Id { get; set; }
+        [EditorRequired, Parameter] public int CityId { get; set; }
 
         protected override async Task OnParametersSetAsync()
         {
-            if (Id != 0)
+            if (CityId != 0)
             {
-                var responseHttp = await Repository.GetAsync<City>($"/api/cities/{Id}");
+                var responseHttp = await Repository.GetAsync<City>($"/api/cities/{CityId}");
                 if (responseHttp.Error)
                 {
                     if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)

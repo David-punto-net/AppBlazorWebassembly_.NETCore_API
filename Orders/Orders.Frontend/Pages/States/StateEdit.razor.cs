@@ -14,13 +14,13 @@ namespace Orders.Frontend.Pages.States
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-        [EditorRequired, Parameter] public int Id { get; set; }
+        [EditorRequired, Parameter] public int SateId { get; set; }
 
         protected override async Task OnParametersSetAsync()
         {
-            if (Id != 0)
+            if (SateId != 0)
             {
-                var responseHttp = await Repository.GetAsync<State>($"/api/states/{Id}");
+                var responseHttp = await Repository.GetAsync<State>($"/api/states/{SateId}");
                 if (responseHttp.Error)
                 {
                     if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)

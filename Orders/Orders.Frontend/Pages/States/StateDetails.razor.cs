@@ -33,7 +33,7 @@ namespace Orders.Frontend.Pages.States
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo($"/countries/details/{state!.CountryId}");
+                    NavigationManager.NavigateTo($"/countries");
                 }
 
                 var message = await responseHttp.GetErrorMessageAsync();
