@@ -20,6 +20,7 @@ namespace Orders.Frontend.Shared
 
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         public bool FormPressCreate { get; set; } = false;
+        public bool FormPressReturn { get; set; } = false;
 
         protected override void OnInitialized()
         {
@@ -44,6 +45,7 @@ namespace Orders.Frontend.Shared
                     var confirm = !string.IsNullOrEmpty(result.Value);
                     if (!confirm)
                     {
+                        FormPressReturn=false;
                         context.PreventNavigation();
                     }
                 }

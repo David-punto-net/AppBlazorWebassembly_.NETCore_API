@@ -11,15 +11,13 @@ namespace Orders.Frontend.Pages.Categories
         private Category category = new();
 
         private FormWithName<Category>? categoryForm;
-
-        private bool regreso = false;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
 
         private async Task CreateAsync()
         {
-            if (!regreso)
+            if (!categoryForm!.FormPressReturn)
             {
                 categoryForm!.FormPressCreate = true;
 
@@ -47,7 +45,7 @@ namespace Orders.Frontend.Pages.Categories
 
         private async Task Return()
         {
-            regreso = true;
+            categoryForm!.FormPressReturn = true;
             categoryForm!.FormPressCreate = false;
             NavigationManager.NavigateTo("/categories");
         }

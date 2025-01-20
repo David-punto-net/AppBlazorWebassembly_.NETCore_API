@@ -11,9 +11,6 @@ namespace Orders.Frontend.Pages.Cities
         private City? city;
 
         private FormWithName<City>? cityForm;
-
-        private bool regreso = false;
-
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
@@ -45,7 +42,7 @@ namespace Orders.Frontend.Pages.Cities
 
         private async Task UpdateAsync()
         {
-            if (!regreso)
+            if (!cityForm!.FormPressReturn)
             {
                 cityForm!.FormPressCreate = true;
 
@@ -73,7 +70,7 @@ namespace Orders.Frontend.Pages.Cities
 
         private void Return()
         {
-            regreso = true;
+            cityForm!.FormPressReturn = true;
             cityForm!.FormPressCreate = false;
             NavigationManager.NavigateTo($"/states/details/{city!.StateId}");
         }

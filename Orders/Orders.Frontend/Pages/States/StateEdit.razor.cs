@@ -11,9 +11,6 @@ namespace Orders.Frontend.Pages.States
         private State? state;
 
         private FormWithName<State>? stateForm;
-
-        private bool regreso = false;
-
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
@@ -45,7 +42,7 @@ namespace Orders.Frontend.Pages.States
 
         private async Task UpdateAsync()
         {
-            if (!regreso)
+            if (!stateForm!.FormPressReturn)
             {
                 stateForm!.FormPressCreate = true;
 
@@ -73,7 +70,7 @@ namespace Orders.Frontend.Pages.States
 
         private void Return()
         {
-            regreso = true;
+            stateForm!.FormPressReturn = true;
             stateForm!.FormPressCreate = false;
             NavigationManager.NavigateTo($"/countries/details/{state!.CountryId}");
         }

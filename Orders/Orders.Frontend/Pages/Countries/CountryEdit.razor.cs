@@ -11,9 +11,6 @@ namespace Orders.Frontend.Pages.Countries
         private Country? country;
 
         private FormWithName<Country>? countryForm;
-
-        private bool regreso = false;
-
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
@@ -45,7 +42,7 @@ namespace Orders.Frontend.Pages.Countries
 
         private async Task UpdateAsync()
         {
-            if (!regreso)
+            if (!countryForm!.FormPressReturn)
             {
                 countryForm!.FormPressCreate = true;
 
@@ -73,7 +70,7 @@ namespace Orders.Frontend.Pages.Countries
 
         private void Return()
         {
-            regreso = true;
+            countryForm!.FormPressReturn = true;
             countryForm!.FormPressCreate = false;
             NavigationManager.NavigateTo("/countries");
         }
