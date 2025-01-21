@@ -26,6 +26,9 @@ builder.Services.AddScoped<ICountriesUnitsOfWork,CountriesUnitsOfWork>();
 builder.Services.AddScoped<IStatesRepository, StatesRepository>();
 builder.Services.AddScoped<IStatesUnitsOfWork, StatesUnitsOfWork>();
 
+builder.Services.AddScoped<ICitiesRepository, CitiesRepository>();
+builder.Services.AddScoped<ICitiesUnitsOfWork, CitiesUnitsOfWork>();
+
 
 var app = builder.Build();
 SeedData(app);
