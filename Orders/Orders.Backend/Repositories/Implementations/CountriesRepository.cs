@@ -42,7 +42,7 @@ namespace Orders.Backend.Repositories.Implementations
         public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync()
         {
            var countries = await _context.Countries
-                                 .Include(c => c.States)
+                                 //.Include(c => c.States)
                                  .OrderBy(x => x.Name)
                                  .ToListAsync();
             return new ActionResponse<IEnumerable<Country>>()

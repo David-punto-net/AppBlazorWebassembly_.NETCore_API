@@ -26,7 +26,7 @@ namespace Orders.Frontend.Pages.Categories
 
         private async Task LoadAsync()
         {
-            var responseHttp = await Repository.GetAsync<List<Category>>("api/categories");
+            var responseHttp = await Repository.GetAsync<List<Category>>("api/categories/full");
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();

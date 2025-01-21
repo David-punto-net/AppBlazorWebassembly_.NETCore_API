@@ -49,6 +49,12 @@
                 <GenericList MyList="Countries!">
                     <Body>
 
+                        <Pagination CurrentPage="currentPage"
+                                    TotalPage="totalPages"
+                                    SelectPage="SelectedPageAsync" />
+
+
+
                         <QuickGrid class="table table-striped table-hover" Items="@Countries" Pagination="PaginationGrid">
                             <PropertyColumn Property="@(p => p.Name)" Sortable="true" Title="País" Align="Align.Left" />
                             <PropertyColumn Property="@(p => p.StatesNumber)" Sortable="true" Title="N° de Regiones" Align="Align.Left" />

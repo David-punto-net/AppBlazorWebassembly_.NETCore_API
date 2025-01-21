@@ -18,6 +18,33 @@ namespace Orders.Backend.Repositories.Implementations
             _entity = _context.Set<T>();
         }
 
+        public virtual async Task<ActionResponse<T>> GetAsync(int id)
+        {
+            var row = await _entity.FindAsync(id);
+            if (row is null)
+            {
+                return new ActionResponse<T>
+                {
+                    WassSuccees = false,
+                    Message = "Registro no encontrado."
+                };
+            }
+
+            return new ActionResponse<T>
+            {
+                WassSuccees = true,
+                Result = row
+            };
+        }
+
+        public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync()
+        {
+            return new ActionResponse<IEnumerable<T>>
+            {
+                WassSuccees = true,
+                Result = await _entity.ToListAsync()
+            };
+        }
         public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination)
         {
             var queryable = _entity.AsQueryable();
@@ -94,33 +121,6 @@ namespace Orders.Backend.Repositories.Implementations
             }
         }
 
-        public virtual async Task<ActionResponse<T>> GetAsync(int id)
-        {
-            var row = await _entity.FindAsync(id);
-            if (row is null)
-            {
-                return new ActionResponse<T>
-                {
-                    WassSuccees = false,
-                    Message = "Registro no encontrado."
-                };
-            }
-
-            return new ActionResponse<T>
-            {
-                WassSuccees = true,
-                Result = row
-            };
-        }
-
-        public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync()
-        {
-            return new ActionResponse<IEnumerable<T>>
-            {
-                WassSuccees = true,
-                Result = await _entity.ToListAsync()
-            };
-        }
 
         public virtual async Task<ActionResponse<T>> UpdateAsync(T entity)
         {
