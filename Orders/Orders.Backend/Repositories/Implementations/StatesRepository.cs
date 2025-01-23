@@ -82,5 +82,47 @@ namespace Orders.Backend.Repositories.Implementations
                 Result = totalPages
             };
         }
+
+        public override async Task<ActionResponse<IEnumerable<State>>> GetPaginationAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.States
+                                    .Include(c => c.Cities)
+                                    .Where(x => x.Country!.Id == pagination.Id)
+                                    .AsQueryable();
+
+            if (!string.IsNullOrEmpty(pagination.Filter))
+            {
+                var filter = pagination.Filter.ToLower();
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(filter));
+            }
+
+            return new ActionResponse<IEnumerable<State>>
+            {
+                WassSuccees = true,
+                Result = await queryable.Skip(pagination.Page).Take(pagination.RecordsNumber).ToListAsync()
+            };
+
+        }
+
+        public override async Task<ActionResponse<int>> GetTotalRecordAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.States
+                                    .Where(x => x.Country!.Id == pagination.Id)
+                                    .AsQueryable();
+
+            if (!string.IsNullOrEmpty(pagination.Filter))
+            {
+                var filter = pagination.Filter.ToLower();
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(filter));
+            }
+
+            int count = await queryable.CountAsync();
+            return new ActionResponse<int>
+            {
+                WassSuccees = true,
+                Result = count
+            };
+        }
+
     }
 }

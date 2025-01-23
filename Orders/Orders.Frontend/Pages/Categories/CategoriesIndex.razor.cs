@@ -8,19 +8,19 @@ namespace Orders.Frontend.Pages.Categories
 {
     public partial class CategoriesIndex
     {
+        private Country? country;
         private int totalRegistros;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-        public IQueryable<Category>? Categories { get; set; }
 
         private PaginationState PaginationGrid = new PaginationState { ItemsPerPage = 10 };
 
         private GridItemsProvider<Category>? CategoriesProvider;
-
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        public IQueryable<Category>? Categories { get; set; }
 
-        QuickGrid<Category>? myGrid;
+        private QuickGrid<Category>? myGrid;
 
         protected override async Task OnInitializedAsync()
         {
@@ -59,10 +59,9 @@ namespace Orders.Frontend.Pages.Categories
                     var message = await responseHttp.GetErrorMessageAsync();
                     await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 }
-       
+
                 return GridItemsProviderResult.From(items: responseHttp!.Response!, totalItemCount: totalRegistros);
             };
-            
         }
 
         private async Task DeleteAsync(Category category)

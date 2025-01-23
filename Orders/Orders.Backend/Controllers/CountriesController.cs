@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Orders.Backend.UnitsOfWork.Implementations;
 using Orders.Backend.UnitsOfWork.Interfaces;
 using Orders.Shared.DTOs;
 using Orders.Shared.Entities;
@@ -59,6 +60,29 @@ namespace Orders.Backend.Controllers
                 return Ok(action.Result);
             }
             return NotFound();
+        }
+
+        [HttpGet("pagination")]
+        public override async Task<IActionResult> GetPaginationAsync(PaginationDTO pagination)
+        {
+            var action = await _countriesUnitsOfWork.GetPaginationAsync(pagination);
+            if (action.WassSuccees)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
+        }
+
+
+        [HttpGet("totalRecord")]
+        public override async Task<IActionResult> GetTotalRecordAsync(PaginationDTO pagination)
+        {
+            var action = await _countriesUnitsOfWork.GetTotalRecordAsync(pagination);
+            if (action.WassSuccees)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
         }
 
 

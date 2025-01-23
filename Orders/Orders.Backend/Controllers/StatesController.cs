@@ -54,7 +54,30 @@ namespace Orders.Backend.Controllers
         {
             var action = await _statesUnitsOfWork.GetTotalPagesAsync(pagination);
             
-        if (action.WassSuccees)
+            if (action.WassSuccees)
+                {
+                    return Ok(action.Result);
+                }
+                return BadRequest();
+        }
+
+        [HttpGet("pagination")]
+        public override async Task<IActionResult> GetPaginationAsync(PaginationDTO pagination)
+        {
+            var action = await _statesUnitsOfWork.GetPaginationAsync(pagination);
+            if (action.WassSuccees)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
+        }
+
+
+        [HttpGet("totalRecord")]
+        public override async Task<IActionResult> GetTotalRecordAsync(PaginationDTO pagination)
+        {
+            var action = await _statesUnitsOfWork.GetTotalRecordAsync(pagination);
+            if (action.WassSuccees)
             {
                 return Ok(action.Result);
             }

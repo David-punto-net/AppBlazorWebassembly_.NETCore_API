@@ -1,6 +1,6 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
-using Microsoft.AspNetCore.Components.QuickGrid;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.QuickGrid;
 using Orders.Frontend.Repositories;
 using Orders.Shared.Entities;
 using System.Net;
@@ -10,16 +10,20 @@ namespace Orders.Frontend.Pages.States
     public partial class StateDetails
     {
         private State? state;
+
+        private int totalRegistros;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Parameter] public int StateId { get; set; }
-        public IQueryable<City>? Cities { get; set; }
-        public IQueryable<City>? CitiessMaster { get; set; }
 
         private PaginationState PaginationGrid = new PaginationState { ItemsPerPage = 10 };
 
-        private string nameFilter = "";
+        private GridItemsProvider<City>? CitiesProvider;
+        [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        public IQueryable<City>? Cities { get; set; }
+
+        private QuickGrid<City>? myGrid;
 
         protected override async Task OnInitializedAsync()
         {
@@ -42,8 +46,45 @@ namespace Orders.Frontend.Pages.States
             }
 
             state = responseHttp.Response;
-            Cities = state!.Cities!.AsQueryable();
-            CitiessMaster = Cities;
+
+            await LoadCitiesAsync();
+        }
+
+        private async Task LoadCitiesAsync()
+        {
+            var url = $"api/cities/totalRecord?id={StateId}";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
+
+            var responseHttp = await Repository.GetAsync<int>(url);
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+
+            totalRegistros = responseHttp.Response;
+
+            CitiesProvider = async req =>
+            {
+                var url = $"api/cities/pagination?id={StateId}&page={req.StartIndex}&recordsnumber={req.Count}";
+                if (!string.IsNullOrEmpty(Filter))
+                {
+                    url += $"&filter={Filter}";
+                }
+
+                var responseHttp = await Repository.GetAsync<List<City>>(url);
+                if (responseHttp.Error)
+                {
+                    var message = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                }
+
+                return GridItemsProviderResult.From(items: responseHttp!.Response!, totalItemCount: totalRegistros);
+            };
         }
 
         private async Task DeleteAsync(City city)
@@ -84,29 +125,22 @@ namespace Orders.Frontend.Pages.States
             });
 
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro eliminado con éxito.");
-
         }
 
         private async Task Filtrar()
         {
-            if (nameFilter != "")
+            if (!string.IsNullOrEmpty(Filter))
             {
-                Cities = CitiessMaster!.Where(c => c.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
+                await LoadCitiesAsync();
+                await myGrid!.RefreshDataAsync();
             }
-            else
-            {
-                Cities = CitiessMaster;
-            }
-
-            //await grid!.RefreshDataAsync();
         }
 
         private async Task Refrescar()
         {
-            nameFilter = "";
+            Filter = string.Empty;
 
-            Cities = CitiessMaster!.Where(c => c.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
-
+            await LoadCitiesAsync();
         }
     }
 }

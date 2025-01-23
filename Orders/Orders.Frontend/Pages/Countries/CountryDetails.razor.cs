@@ -10,16 +10,20 @@ namespace Orders.Frontend.Pages.Countries
     public partial class CountryDetails
     {
         private Country? country;
+
+        private int totalRegistros;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Parameter] public int CountryId { get; set; }
-        public IQueryable<State>? States { get; set; }
-        public IQueryable<State>? StatesMaster { get; set; }
-
+        
         private PaginationState PaginationGrid = new PaginationState { ItemsPerPage = 10 };
 
-        private string nameFilter = "";
+        private GridItemsProvider<State>? StatesProvider;
+        [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        public IQueryable<State>? States { get; set; }
+
+        private QuickGrid<State>? myGrid;
 
         protected override async Task OnInitializedAsync()
         {
@@ -33,7 +37,7 @@ namespace Orders.Frontend.Pages.Countries
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("/countries");
+                    NavigationManager.NavigateTo($"/countries");
                 }
 
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -42,8 +46,47 @@ namespace Orders.Frontend.Pages.Countries
             }
 
             country = responseHttp.Response;
-            States = country!.States!.AsQueryable();
-            StatesMaster = States;
+
+
+            await LoadSateteAsync();
+        }
+
+        private async Task LoadSateteAsync()
+        {
+            var url = $"api/states/totalRecord?id={CountryId}";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
+
+            var responseHttp = await Repository.GetAsync<int>(url);
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+
+            totalRegistros = responseHttp.Response;
+
+            StatesProvider = async req =>
+            {
+                var url = $"api/states/pagination?id={CountryId}&page={req.StartIndex}&recordsnumber={req.Count}";
+                if (!string.IsNullOrEmpty(Filter))
+                {
+                    url += $"&filter={Filter}";
+                }
+
+                var responseHttp = await Repository.GetAsync<List<State>>(url);
+                if (responseHttp.Error)
+                {
+                    var message = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                }
+
+                return GridItemsProviderResult.From(items: responseHttp!.Response!, totalItemCount: totalRegistros);
+            };
+
         }
 
         private async Task DeleteAsync(State state)
@@ -73,7 +116,7 @@ namespace Orders.Frontend.Pages.Countries
                 }
             }
 
-            await LoadAsync();
+            await LoadSateteAsync();
 
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
@@ -89,24 +132,18 @@ namespace Orders.Frontend.Pages.Countries
 
         private async Task Filtrar()
         {
-            if (nameFilter != "")
+            if (!string.IsNullOrEmpty(Filter))
             {
-                States = StatesMaster!.Where(c => c.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
+                await LoadSateteAsync();
+                await myGrid!.RefreshDataAsync();
             }
-            else
-            {
-                States = StatesMaster;
-            }
-
-            //await grid!.RefreshDataAsync();
         }
 
         private async Task Refrescar()
         {
-            nameFilter = "";
+            Filter = string.Empty;
 
-            States = StatesMaster!.Where(c => c.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
-
+            await LoadSateteAsync();
         }
 
     }
