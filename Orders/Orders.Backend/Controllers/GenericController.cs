@@ -24,6 +24,28 @@ namespace Orders.Backend.Controllers
             return BadRequest();
         }
 
+        [HttpGet("pagination/{skip}/{take}")]
+        public virtual async Task<IActionResult> GetPaginationAsync([FromQuery] PaginationDTO pagination)
+        {
+            var action = await _unitsOfWork.GetPaginationAsync(pagination);
+            if (action.WassSuccees)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
+        }
+
+        [HttpGet("totalRecord")]
+        public virtual async Task<IActionResult> GetTotalRecordAsync([FromQuery] PaginationDTO pagination)
+        {
+            var action = await _unitsOfWork.GetTotalRecordAsync(pagination);
+            if (action.WassSuccees)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
+        }
+
         [HttpGet]
         public virtual async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
         {
@@ -34,6 +56,7 @@ namespace Orders.Backend.Controllers
             }
             return BadRequest();
         }
+
         [HttpGet("totalPages")]
         public virtual async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
         {

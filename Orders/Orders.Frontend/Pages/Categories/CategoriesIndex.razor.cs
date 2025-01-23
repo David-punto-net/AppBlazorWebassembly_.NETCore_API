@@ -8,16 +8,19 @@ namespace Orders.Frontend.Pages.Categories
 {
     public partial class CategoriesIndex
     {
+        private int totalRegistros;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         public IQueryable<Category>? Categories { get; set; }
-        public IQueryable<Category>? CategoriesMaster { get; set; }
 
         private PaginationState PaginationGrid = new PaginationState { ItemsPerPage = 10 };
 
+        private GridItemsProvider<Category>? CategoriesProvider;
 
-        private string nameFilter = "";
+        [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+
+        QuickGrid<Category>? myGrid;
 
         protected override async Task OnInitializedAsync()
         {
@@ -26,7 +29,13 @@ namespace Orders.Frontend.Pages.Categories
 
         private async Task LoadAsync()
         {
-            var responseHttp = await Repository.GetAsync<List<Category>>("api/categories/full");
+            var url = "api/categories/totalRecord";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"?filter={Filter}";
+            }
+
+            var responseHttp = await Repository.GetAsync<int>(url);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -34,8 +43,26 @@ namespace Orders.Frontend.Pages.Categories
                 return;
             }
 
-            Categories = responseHttp.Response!.AsQueryable();
-            CategoriesMaster = Categories;
+            totalRegistros = responseHttp.Response;
+
+            CategoriesProvider = async req =>
+            {
+                var url = $"api/categories/pagination?page={req.StartIndex}&recordsnumber={req.Count}";
+                if (!string.IsNullOrEmpty(Filter))
+                {
+                    url += $"&filter={Filter}";
+                }
+
+                var responseHttp = await Repository.GetAsync<List<Category>>(url);
+                if (responseHttp.Error)
+                {
+                    var message = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                }
+       
+                return GridItemsProviderResult.From(items: responseHttp!.Response!, totalItemCount: totalRegistros);
+            };
+            
         }
 
         private async Task DeleteAsync(Category category)
@@ -84,24 +111,18 @@ namespace Orders.Frontend.Pages.Categories
 
         private async Task Filtrar()
         {
-            if (nameFilter != "")
+            if (!string.IsNullOrEmpty(Filter))
             {
-                Categories = CategoriesMaster!.Where(c => c.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
+                await LoadAsync();
+                await myGrid!.RefreshDataAsync();
             }
-            else
-            {
-                Categories = CategoriesMaster;
-            }
-
         }
 
         private async Task Refrescar()
         {
-            nameFilter = "";
-     
-           Categories = CategoriesMaster!.Where(c => c.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
-           
-        }
+            Filter = string.Empty;
 
+            await LoadAsync();
+        }
     }
 }

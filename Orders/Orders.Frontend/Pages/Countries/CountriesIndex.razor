@@ -35,9 +35,9 @@
                 </div>
                 <div class="col">
                     <div class="search-box">
-                        <input type="search" autofocus @bind="nameFilter" placeholder="Nombre país..." />
-                        <button @onclick=@(() => Filtrar()) class="btn btn-dark btn-sm"><i class="bi bi-search"></i></button>
-                        <button @onclick=@(() => Refrescar()) class="btn btn-dark btn-sm"><i class="bi bi-arrow-clockwise"></i></button>
+                        <input type="search" autofocus @bind="Filter" placeholder="Nombre país..." />
+                        <button type="button" class="btn btn-dark btn-sm" @onclick="ApplyFilterAsync"><i class="bi bi-search"></i></button>
+                        <button type="button" class="btn btn-dark btn-sm" @onclick="CleanFilterAsync"><i class="bi bi-arrow-clockwise"></i></button>
                     </div>
                 </div>
             </div>

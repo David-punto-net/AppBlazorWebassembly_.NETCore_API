@@ -4,6 +4,7 @@ using Orders.Backend.Helpers;
 using Orders.Backend.Repositories.Interfaces;
 using Orders.Shared.DTOs;
 using Orders.Shared.Response;
+using System.Linq;
 
 namespace Orders.Backend.Repositories.Implementations
 {
@@ -45,6 +46,27 @@ namespace Orders.Backend.Repositories.Implementations
                 Result = await _entity.ToListAsync()
             };
         }
+
+        public virtual async Task<ActionResponse<IEnumerable<T>>> GetPaginationAsync(PaginationDTO pagination)
+        {
+            return new ActionResponse<IEnumerable<T>>
+            {
+                WassSuccees = true,
+                Result = await _entity.Skip(pagination.Page).Take(pagination.RecordsNumber).ToListAsync()
+            };
+        }
+
+        public virtual async Task<ActionResponse<int>> GetTotalRecordAsync(PaginationDTO pagination)
+        {
+            var queryable = _entity.AsQueryable();
+            int count = await queryable.CountAsync();
+            return new ActionResponse<int>
+            {
+                WassSuccees = true,
+                Result = count
+            };
+        }
+
         public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination)
         {
             var queryable = _entity.AsQueryable();

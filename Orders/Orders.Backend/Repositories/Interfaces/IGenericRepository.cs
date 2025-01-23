@@ -9,6 +9,10 @@ namespace Orders.Backend.Repositories.Interfaces
 
         Task<ActionResponse<IEnumerable<T>>> GetAsync();
 
+        Task<ActionResponse<IEnumerable<T>>> GetPaginationAsync(PaginationDTO pagination);
+
+        Task<ActionResponse<int>> GetTotalRecordAsync(PaginationDTO pagination);
+
         Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination);
 
         Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);

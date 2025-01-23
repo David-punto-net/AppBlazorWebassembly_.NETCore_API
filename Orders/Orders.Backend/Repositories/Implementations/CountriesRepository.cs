@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Orders.Backend.Data;
 using Orders.Backend.Helpers;
 using Orders.Backend.Repositories.Interfaces;
 using Orders.Shared.DTOs;
 using Orders.Shared.Entities;
 using Orders.Shared.Response;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Orders.Backend.Repositories.Implementations
 {
@@ -42,7 +44,7 @@ namespace Orders.Backend.Repositories.Implementations
         public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync()
         {
            var countries = await _context.Countries
-                                 //.Include(c => c.States)
+                                 .Include(c => c.States)
                                  .OrderBy(x => x.Name)
                                  .ToListAsync();
             return new ActionResponse<IEnumerable<Country>>()
@@ -57,6 +59,12 @@ namespace Orders.Backend.Repositories.Implementations
             var queryable =  _context.Countries
                                      .Include(c => c.States)
                                     .AsQueryable();
+
+            if (!string.IsNullOrEmpty(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
             return new ActionResponse<IEnumerable<Country>>()
             {
                 WassSuccees = true,
@@ -64,6 +72,25 @@ namespace Orders.Backend.Repositories.Implementations
                                 .OrderBy(x => x.Name)
                                 .Paginate(pagination)
                                 .ToListAsync()
+            };
+        }
+
+        public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.Countries.AsQueryable();
+
+            if (!string.IsNullOrEmpty(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
+            double count = await queryable.CountAsync();
+            int totalPages = (int)Math.Ceiling(count / pagination.RecordsNumber);
+
+            return new ActionResponse<int>
+            {
+                WassSuccees = true,
+                Result = totalPages
             };
         }
 

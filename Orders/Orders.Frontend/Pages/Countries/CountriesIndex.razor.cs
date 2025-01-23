@@ -16,10 +16,13 @@ namespace Orders.Frontend.Pages.Countries
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         public IQueryable<Country>? Countries { get; set; }
         public IQueryable<Country>? CountriesMaster { get; set; }
+        [Parameter, SupplyParameterFromQuery] public string Page {  get; set; }= string.Empty;
+        [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+
 
         private PaginationState PaginationGrid = new PaginationState { ItemsPerPage = 10 };
 
-        private string nameFilter = "";
+        //private string nameFilter = "";
 
         protected override async Task OnInitializedAsync()
         {
@@ -35,6 +38,11 @@ namespace Orders.Frontend.Pages.Countries
 
         private async Task LoadAsync(int page = 1)
         {
+            if(!string.IsNullOrWhiteSpace(Page))
+            {
+                page = Convert.ToInt32(Page);
+            }
+
             var ok = await LoadListAsync(page);
             if (ok)
             {
@@ -44,7 +52,15 @@ namespace Orders.Frontend.Pages.Countries
 
         private async Task<bool> LoadListAsync(int page)
         {
-            var responseHttp = await Repository.GetAsync<List<Country>>($"api/countries?page={page}");
+
+            var url = $"api/countries?page={page}";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
+
+
+            var responseHttp = await Repository.GetAsync<List<Country>>(url);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -59,7 +75,14 @@ namespace Orders.Frontend.Pages.Countries
 
         private async Task LoadPagesAsync()
         {
-            var responseHttp = await Repository.GetAsync<int>("api/countries/totalPages");
+
+            var url = "api/countries/totalPages";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"?filter={Filter}";
+            }
+
+            var responseHttp = await Repository.GetAsync<int>(url);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -114,26 +137,19 @@ namespace Orders.Frontend.Pages.Countries
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro eliminado con éxito.");
         }
 
-        private async Task Filtrar()
+        private async Task ApplyFilterAsync()
         {
-            if (nameFilter != "")
-            {
-                Countries = CountriesMaster!.Where(c => c.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
-            }
-            else
-            {
-                Countries = CountriesMaster;
-            }
-
-            //await grid!.RefreshDataAsync();
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
         }
 
-        private async Task Refrescar()
+        private async Task CleanFilterAsync()
         {
-            nameFilter = "";
+            Filter=string.Empty;
+            //nameFilter = string.Empty;
 
-            Countries = CountriesMaster!.Where(c => c.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
-
+            await ApplyFilterAsync();
         }
     }
 }
