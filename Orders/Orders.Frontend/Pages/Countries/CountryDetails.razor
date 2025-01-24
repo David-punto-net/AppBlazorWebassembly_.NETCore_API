@@ -58,7 +58,7 @@ else
                 </div>
                 <div class="col">
                     <div class="search-box">
-                        <input type="search" autofocus @bind="Filter" placeholder="Región..." />
+                        <input type="search" autofocus @bind="Filter" placeholder="Buscar Región..." />
                             <button type="button" @onclick="Filtrar" class="btn btn-dark btn-sm"><i class="bi bi-search"></i></button>
                             <button type="button" @onclick="Refrescar" class="btn btn-dark btn-sm"><i class="bi bi-arrow-clockwise"></i></button>
                     </div>
@@ -74,7 +74,7 @@ else
 
                     <QuickGrid class="table table-striped table-hover" ItemsProvider="StatesProvider" Pagination="PaginationGrid" @ref="myGrid">
                         <PropertyColumn Property="@(p => p.Name)" Title="Región" Class="state-name" />
-                            <PropertyColumn Property="@(p => p.CitiesNumber)" Sortable="true" Title="N° de Ciudades" Align="Align.Left" />
+                            <PropertyColumn Property="@(p => p.CitiesNumber)" Title="N° de Ciudades" />
                             <TemplateColumn>
                             <a class="btn btn-outline-dark btn-sm" href="/states/edit/@context.Id"><i class="bi bi-pencil-fill"></i></a>
                             <a class="btn btn-outline-dark btn-sm" href="/states/details/@context.Id"><i class="bi bi-list-columns-reverse"></i></a>

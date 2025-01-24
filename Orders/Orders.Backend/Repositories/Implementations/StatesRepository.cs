@@ -99,7 +99,7 @@ namespace Orders.Backend.Repositories.Implementations
             return new ActionResponse<IEnumerable<State>>
             {
                 WassSuccees = true,
-                Result = await queryable.Skip(pagination.Page).Take(pagination.RecordsNumber).ToListAsync()
+                Result = await queryable.Skip(pagination.Page).Take(pagination.RecordsNumber).OrderBy(x => x.Id).ToListAsync()
             };
 
         }

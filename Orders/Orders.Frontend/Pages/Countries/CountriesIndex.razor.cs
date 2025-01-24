@@ -1,4 +1,5 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.QuickGrid;
 using Orders.Frontend.Repositories;
@@ -6,6 +7,7 @@ using Orders.Shared.Entities;
 
 namespace Orders.Frontend.Pages.Countries
 {
+    [Authorize(Roles ="Admin")]
     public partial class CountriesIndex
     {
         private int totalRegistros;
