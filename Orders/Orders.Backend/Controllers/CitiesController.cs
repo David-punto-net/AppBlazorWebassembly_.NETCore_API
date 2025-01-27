@@ -21,6 +21,14 @@ namespace Orders.Backend.Controllers
             _citiesUnitsOfWork = citiesUnitsOfWork;
         }
 
+
+        [AllowAnonymous]
+        [HttpGet("combo/{stateId:int}")]
+        public async Task<IActionResult> GetComboAsync(int stateId)
+        {
+            return Ok(await _citiesUnitsOfWork.GetComboAsync(stateId));
+        }
+
         [HttpGet]
         public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
         {

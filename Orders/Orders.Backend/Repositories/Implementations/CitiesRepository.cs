@@ -35,7 +35,7 @@ namespace Orders.Backend.Repositories.Implementations
         public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
         {
             var queryable = _context.Cities
-            .Where(x => x.State!.Id == pagination.Id)
+            .Where(x => x.StateId == pagination.Id)
             .AsQueryable();
 
             double count = await queryable.CountAsync();
@@ -86,6 +86,16 @@ namespace Orders.Backend.Repositories.Implementations
                 WassSuccees = true,
                 Result = count
             };
+        }
+
+        public async Task<IEnumerable<City>> GetComboAsync(int stateId)
+        {
+            return await _context.Cities
+                                 .Where(x => x.StateId == stateId)
+                                 .OrderBy(x => x.Name)
+                                 .ToListAsync();
+
+
         }
     }
 }

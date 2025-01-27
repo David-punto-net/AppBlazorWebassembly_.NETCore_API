@@ -16,5 +16,7 @@ namespace Orders.Backend.UnitsOfWork.Interfaces
         Task<ActionResponse<IEnumerable<State>>> GetPaginationAsync(PaginationDTO pagination);
 
         Task<ActionResponse<int>> GetTotalRecordAsync(PaginationDTO pagination);
+
+        Task<IEnumerable<State>> GetComboAsync(int countryId);
     }
 }

@@ -23,5 +23,7 @@ namespace Orders.Backend.UnitsOfWork.Implementations
         public override async Task<ActionResponse<IEnumerable<City>>> GetPaginationAsync(PaginationDTO pagination) => await _citiesRepository.GetPaginationAsync(pagination);
 
         public override async Task<ActionResponse<int>> GetTotalRecordAsync(PaginationDTO pagination) => await _citiesRepository.GetTotalRecordAsync(pagination);
+
+        public async Task<IEnumerable<City>> GetComboAsync(int stateId) => await _citiesRepository.GetComboAsync(stateId);
     }
 }

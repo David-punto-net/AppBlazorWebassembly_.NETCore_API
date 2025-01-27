@@ -132,5 +132,13 @@ namespace Orders.Backend.Repositories.Implementations
             };
         }
 
+        public async Task<IEnumerable<Country>> GetComboAsync()
+        {
+            return await _context.Countries
+                                 .OrderBy(x => x.Name)
+                                 .ToListAsync();
+
+
+        }
     }
 }

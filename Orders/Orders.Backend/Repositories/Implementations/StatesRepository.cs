@@ -55,7 +55,7 @@ namespace Orders.Backend.Repositories.Implementations
         {
             var queryable = _context.States
             .Include(x => x.Cities)
-            .Where(x => x.Country!.Id == pagination.Id)
+            .Where(x => x.CountryId == pagination.Id)
             .AsQueryable();
             return new ActionResponse<IEnumerable<State>>
             {
@@ -99,7 +99,7 @@ namespace Orders.Backend.Repositories.Implementations
             return new ActionResponse<IEnumerable<State>>
             {
                 WassSuccees = true,
-                Result = await queryable.Skip(pagination.Page).Take(pagination.RecordsNumber).OrderBy(x => x.Id).ToListAsync()
+                Result = await queryable.Skip(pagination.Page).Take(pagination.RecordsNumber).OrderBy(x => x.Name).ToListAsync()
             };
 
         }
@@ -124,5 +124,14 @@ namespace Orders.Backend.Repositories.Implementations
             };
         }
 
+        public async Task<IEnumerable<State>> GetComboAsync(int countryId)
+        {
+            return await _context.States
+                                 .Where(x => x.CountryId == countryId)
+                                 .OrderBy(x => x.Name)
+                                 .ToListAsync();
+
+
+        }
     }
 }

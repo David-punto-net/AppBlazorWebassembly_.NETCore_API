@@ -4,7 +4,7 @@ using Orders.Shared.Response;
 
 namespace Orders.Backend.Repositories.Interfaces
 {
-    public interface ICountriesRepository 
+    public interface ICountriesRepository
     {
         Task<ActionResponse<Country>> GetAsync(int id);
 
@@ -17,5 +17,7 @@ namespace Orders.Backend.Repositories.Interfaces
         Task<ActionResponse<IEnumerable<Country>>> GetPaginationAsync(PaginationDTO pagination);
 
         Task<ActionResponse<int>> GetTotalRecordAsync(PaginationDTO pagination);
+
+        Task<IEnumerable<Country>> GetComboAsync();
     }
 }

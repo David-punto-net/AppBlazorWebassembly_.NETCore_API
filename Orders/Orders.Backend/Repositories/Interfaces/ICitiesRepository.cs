@@ -13,5 +13,7 @@ namespace Orders.Backend.Repositories.Interfaces
         Task<ActionResponse<IEnumerable<City>>> GetPaginationAsync(PaginationDTO pagination);
 
         Task<ActionResponse<int>> GetTotalRecordAsync(PaginationDTO pagination);
+
+        Task<IEnumerable<City>> GetComboAsync(int stateId);
     }
 }
