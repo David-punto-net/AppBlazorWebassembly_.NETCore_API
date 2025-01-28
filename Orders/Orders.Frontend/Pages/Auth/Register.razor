@@ -1,6 +1,4 @@
-﻿
-
-@page "/Register"
+﻿@page "/Register"
 
 @if(loading)
 {
@@ -135,12 +133,8 @@ else
                                     </div>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label>Foto:</label>
-                                    <div>
-                                        <InputText class="form-control" @bind-Value="@userDTO.Photo" />
-                                        <ValidationMessage For="@(() => userDTO.Photo)" />
-                                    </div>
+                                    <div class="mb-3 label-photo">
+                                      <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl"/>
                                 </div>
                           
                             </div>
