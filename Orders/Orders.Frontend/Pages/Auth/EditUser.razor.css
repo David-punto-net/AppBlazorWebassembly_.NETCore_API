@@ -1,0 +1,21 @@
+﻿.center-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    /*height: 100vh;*/ /* Altura completa de la pantalla */
+}
+
+.card {
+    width: 100%;
+    max-width: 1000px; /* Ancho máximo del formulario */
+    margin: 0 auto;
+}
+
+label, .label-photo {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555555;
+}

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Orders.Backend.Repositories.Implementations;
 using Orders.Backend.Repositories.Interfaces;
 using Orders.Backend.UnitsOfWork.Interfaces;
 using Orders.Shared.DTOs;
@@ -25,9 +26,14 @@ namespace Orders.Backend.UnitsOfWork.Implementations
 
         public async Task<bool> IsUserInRoleAsync(User user, string roleName) => await _usersRepository.IsUserInRoleAsync(user, roleName);
 
-        public async Task<SignInResult> LoginAsync(LoginDTO model)=> await _usersRepository.LoginAsync(model);
+        public async Task<SignInResult> LoginAsync(LoginDTO model) => await _usersRepository.LoginAsync(model);
 
-        public async Task LogoutAsync()=> await _usersRepository.LogoutAsync();
+        public async Task LogoutAsync() => await _usersRepository.LogoutAsync();
 
+        public async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword) => await _usersRepository.ChangePasswordAsync(user, currentPassword, newPassword);
+
+        public async Task<User> GetUserAsync(Guid userId) => await _usersRepository.GetUserAsync(userId);
+
+        public async Task<IdentityResult> UpdateUserAsync(User user) => await _usersRepository.UpdateUserAsync(user);
     }
 }
