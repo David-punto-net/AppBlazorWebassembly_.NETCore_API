@@ -7,6 +7,166 @@
 else
 {
 
+    <div class="register-wrapper mt-5 d-flex justify-content-center align-items-center">
+        <div class="register-container p-4 shadow-lg rounded bg-white">
+
+            <div class="col-md-12 mb-4">
+                <h2>Registrate</h2>
+            </div>
+
+            <EditForm Model="userDTO" OnValidSubmit="CreateUserAsync">
+                <DataAnnotationsValidator />
+
+                <div class="row">
+                    <div class="col-md-12 mt-3">
+                        <div class="row">
+
+                            <div class="form-group mb-3">
+                                <label for="email">Email:</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                                    <InputText id="email" class="form-control" @bind-Value="@userDTO.Email" />
+                                </div>
+                                <ValidationMessage For="@(() => userDTO.Email)" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="password">Contraseña:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                        <InputText id="password" type="password" class="form-control" @bind-Value="@userDTO.Password" />
+                                    </div>
+                                    <ValidationMessage For="@(() => userDTO.Password)" />
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="first-name">Nombres:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                                        <InputText id="first-name" class="form-control" @bind-Value="@userDTO.FirstName" />
+                                    </div>
+                                    <ValidationMessage For="@(() => userDTO.FirstName)" />
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="last-name">Apellidos:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                                        <InputText id="last-name" class="form-control" @bind-Value="@userDTO.LastName" />
+                                    </div>
+                                    <ValidationMessage For="@(() => userDTO.LastName)" />
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="document">Documento:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+                                        <InputText id="document" class="form-control" @bind-Value="@userDTO.Document" />
+                                    </div>
+                                    <ValidationMessage For="@(() => userDTO.Document)" />
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="phone">Teléfono:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
+                                        <InputText id="phone" class="form-control" @bind-Value="@userDTO.PhoneNumber" />
+                                    </div>
+                                    <ValidationMessage For="@(() => userDTO.PhoneNumber)" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="password-confirm">Confirmación de contraseña:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                        <InputText id="password-confirm" type="password" class="form-control" @bind-Value="@userDTO.PasswordConfirm" />
+                                    </div>
+                                    <ValidationMessage For="@(() => userDTO.PasswordConfirm)" />
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="country">País:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-globe"></i></span>
+                                        <select id="country" class="form-select" @onchange="CountryChangedAsync">
+                                            <option value="0">Seleccione un país</option>
+                                            @if (countries is not null)
+                                            {
+                                                @foreach (var country in countries)
+                                                {
+                                                    <option value="@country.Id">@country.Name</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="state">Región:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-map"></i></span>
+                                        <select id="state" class="form-select" @onchange="StateChangedAsync">
+                                            <option value="0">Seleccione una región</option>
+                                            @if (states is not null)
+                                            {
+                                                @foreach (var state in states)
+                                                {
+                                                    <option value="@state.Id">@state.Name</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="city">Ciudad:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                        <select id="city" class="form-select" @bind="userDTO.CityId">
+                                            <option value="0">Seleccione una ciudad</option>
+                                            @if (cities is not null)
+                                            {
+                                                @foreach (var city in cities)
+                                                {
+                                                    <option value="@city.Id">@city.Name</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                    <ValidationMessage For="@(() => userDTO.CityId)" />
+                                </div>
+
+                                <div class="form-group mb-3 label-photo">
+                                    <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="address">Dirección:</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-house-fill"></i></span>
+                                    <InputText id="address" class="form-control" @bind-Value="@userDTO.Address" />
+                                </div>
+                                <ValidationMessage For="@(() => userDTO.Address)" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button class="btn btn-primary w-100" type="submit"><i class="bi bi-floppy2-fill"></i> Registrar</button>
+                </div>
+            </EditForm>
+
+        </div>
+    </div>
+
+}
+@* 
+
  <div class="center-form">
     <div class="card mt-3">
 
@@ -159,4 +319,5 @@ else
   </div>
 </div>
 
-}
+ *@
+

@@ -1,40 +1,48 @@
 ﻿@page "/Login"
 
 
-<div class="login-wrapper mt-5">
-    <div class="login-container">
-   
-        <div class="col-md-12">
-            <h3><i class="bi bi-lock-fill"></i> Iniciar Sesión</h3>
+<div class="login-wrapper mt-5 d-flex justify-content-center align-items-center">
+    <div class="login-container p-4 shadow-lg rounded bg-white">
 
-            <EditForm Model="loginDTO" OnValidSubmit="LoginAsync">
-                <DataAnnotationsValidator />
-
-                <div class="form-group">
-                        
-                            <label>Email:</label>
-                            <div>
-                                <InputText class="form-control" @bind-Value="@loginDTO.Email" />
-                                <ValidationMessage For="@(() => loginDTO.Email)" />
-                            </div>
-                </div>
-                 <div class="form-group">
-                    <label>Contraseña:</label>
-                    <div>
-                        <InputText type="password" class="form-control" @bind-Value="@loginDTO.Password" />
-                        <ValidationMessage For="@(() => loginDTO.Password)" />
-                    </div>
-                 </div>
-                    <div class="form-group mt-2">
-                    <button class="btn btn-primary" type="submit"><i class="bi bi-person-fill"></i> Iniciar Sesión</button>
-                    <a class="btn btn-dark" href="/Register"><i class="bi bi-person-fill-add"></i> Regístrate</a>
-                    </div>   
-
-            </EditForm>
-            <div class="card-footer bg-transparent text-center">
-                ¿Has olvidado tu contraseña?
-            </div>
+        <div class="col-md-12 mb-4">
+            <h2>Iniciar Sesión</h2>
         </div>
- 
+
+        <EditForm Model="loginDTO" OnValidSubmit="LoginAsync">
+            <DataAnnotationsValidator />
+
+            <div class="form-group mb-3">
+                <label for="email">Email:</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                    <InputText id="email" type="text" class="form-control" @bind-Value="@loginDTO.Email" />
+                </div>
+                <ValidationMessage For="@(() => loginDTO.Email)" />
+            </div>
+
+            <div class="form-group mb-3">
+                 <div class="d-flex justify-content-between align-items-center">
+                    <label for="password" class="mb-0">Contraseña:</label>
+                    <a class="btn btn-link p-0" href="/RecoverPassword">Olvidaste tú contraseña?</a>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                    <InputText id="password" type="password" class="form-control" @bind-Value="@loginDTO.Password" />
+                </div>
+                <ValidationMessage For="@(() => loginDTO.Password)" />
+            </div>
+
+            <div class="form-group text-center">
+                <button class="btn btn-primary w-100 mb-2" type="submit">Iniciar Sesión</button>
+                <a class="btn btn-secondary w-100" href="/Register">Regístrate</a>
+            </div>
+
+        </EditForm>
+
+        <div class="card-footer bg-transparent text-center mt-3">
+            <p><a class="btn btn-link" href="/ResendToken">Reenviar correo de activación de cuenta</a></p>
+        </div>
     </div>
 </div>
+
+

@@ -5,6 +5,7 @@ using Orders.Frontend.Services;
 using Orders.Shared.DTOs;
 using Orders.Shared.Entities;
 using Orders.Shared.Enums;
+using System;
 
 namespace Orders.Frontend.Pages.Auth
 {
@@ -93,7 +94,7 @@ namespace Orders.Frontend.Pages.Auth
             userDTO.UserName = userDTO.Email;
             userDTO.UserType = UserType.User;
             loading = true;
-            var responseHttp = await Repository.PostAsync<UserDTO, TokenDTO>("/api/accounts/CreateUser", userDTO);
+            var responseHttp = await Repository.PostAsync<UserDTO>("/api/accounts/CreateUser", userDTO);
             loading = false;
 
             if (responseHttp.Error)
@@ -103,7 +104,7 @@ namespace Orders.Frontend.Pages.Auth
                 return;
             }
 
-            await LoginService.LoginAsync(responseHttp.Response!.Token);
+            await SweetAlertService.FireAsync("Confirmación", "Su cuenta ha sido creada con éxito. Se te ha enviado un correo electrónico con las instrucciones para activar tu usuario.", SweetAlertIcon.Info);
             NavigationManager.NavigateTo("/");
         }
     }

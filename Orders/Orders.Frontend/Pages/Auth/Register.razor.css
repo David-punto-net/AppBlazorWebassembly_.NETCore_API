@@ -1,18 +1,27 @@
-﻿/* CSS para centrar el formulario de registro */
-.center-form {
+﻿.register-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100%;
-    /*height: 100vh;*/ /* Altura completa de la pantalla */
 }
 
-.card {
+.register-container {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;*/
     width: 100%;
-    max-width: 1000px; /* Ancho máximo del formulario */
-    margin: 0 auto;
 }
+
+h2 {
+    margin-bottom: 20px;
+    color: #333333;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
 
 label, .label-photo {
     display: block;
@@ -21,12 +30,42 @@ label, .label-photo {
     color: #555555;
 }
 
-
-/*.custom-font {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 14px;
-    color: #555555;
+.input-group-text {
+    background-color: #f8f9fa;
 }
 
-*/
+    .input-group-text i {
+        color: #6c757d;
+    }
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
+
+
+.btn-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+    .btn-link:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
