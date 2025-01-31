@@ -3,20 +3,25 @@
 
  <NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" /> 
 
-<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
-    <DataAnnotationsValidator />
 
-    <div class="mb-3">
-        <label>@Label</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@Model.Name"></InputText>
-            <ValidationMessage For="@(() => Model.Name)" />
+        <EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
 
-        </div>
-    </div>
+            <div class="mb-3">
+                <label>@Label</label>
+                <div class="col-12">
+                    <InputText class="form-control" @bind-Value="@Model.Name"></InputText>
+                    <ValidationMessage For="@(() => Model.Name)" />
 
-    <button class="btn btn-primary" type="submit"><i class="bi bi-floppy-fill"></i> Guardar</button>
-    <button class="btn btn-success" @onclick="ReturnAction"><i class="bi bi-arrow-left"></i> Regresar</button>
+                </div>
+            </div>
 
-</EditForm>
+            <button class="btn btn-primary" type="submit"><i class="bi bi-floppy-fill"></i> Guardar</button>
+            <button class="btn btn-success" @onclick="ReturnAction"><i class="bi bi-arrow-left"></i> Regresar</button>
+
+        </EditForm>
+
+
+
+
   

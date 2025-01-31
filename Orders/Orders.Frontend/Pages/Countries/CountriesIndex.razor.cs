@@ -1,13 +1,16 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.QuickGrid;
+using Orders.Frontend.Pages.Categories;
 using Orders.Frontend.Repositories;
 using Orders.Shared.Entities;
 
 namespace Orders.Frontend.Pages.Countries
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public partial class CountriesIndex
     {
         private int totalRegistros;
@@ -19,6 +22,10 @@ namespace Orders.Frontend.Pages.Countries
 
         private PaginationState PaginationGrid = new PaginationState { ItemsPerPage = 10 };
 
+        private List<int> pageSizeOptions = new List<int> { 5, 10, 20, 50 };
+
+        [CascadingParameter] private IModalService Modal { get; set; } = default!;
+
         private GridItemsProvider<Country>? CountriesProvider;
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
@@ -29,6 +36,37 @@ namespace Orders.Frontend.Pages.Countries
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
+        }
+
+        private async Task ShowModalAsync(int id = 0, bool isEdit = false)
+        {
+            IModalReference modalReference;
+
+            if (isEdit)
+            {
+                modalReference = Modal.Show<CountryEdit>(string.Empty, new ModalParameters().Add("Id", id));
+            }
+            else
+            {
+                modalReference = Modal.Show<CountryCreate>();
+            }
+            var result = await modalReference.Result;
+            if (result.Confirmed)
+            {
+                await LoadAsync();
+            }
+        }
+
+        private void OnItemsPerPageChanged(int itemsPerPage)
+        {
+            PaginationGrid.ItemsPerPage = itemsPerPage;
+        }
+
+        private async Task FilterCallback(string filter)
+        {
+            Filter = filter;
+            await ApplyFilterAsync();
+            StateHasChanged();
         }
 
         private async Task LoadAsync()
@@ -119,13 +157,11 @@ namespace Orders.Frontend.Pages.Countries
                 await LoadAsync();
                 await myGrid!.RefreshDataAsync();
             }
-        }
-
-        private async Task CleanFilterAsync()
-        {
-            Filter = string.Empty;
-
-            await LoadAsync();
+            else
+            {
+                Filter = string.Empty;
+                await LoadAsync();
+            }
         }
     }
 }

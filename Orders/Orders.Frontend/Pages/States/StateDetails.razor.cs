@@ -1,7 +1,11 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.QuickGrid;
+using Orders.Frontend.Pages.Categories;
+using Orders.Frontend.Pages.Cities;
 using Orders.Frontend.Repositories;
 using Orders.Shared.Entities;
 using System.Net;
@@ -21,6 +25,9 @@ namespace Orders.Frontend.Pages.States
 
         private PaginationState PaginationGrid = new PaginationState { ItemsPerPage = 10 };
 
+        private List<int> pageSizeOptions = new List<int> { 5, 10, 20, 50 };
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
+
         private GridItemsProvider<City>? CitiesProvider;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
         public IQueryable<City>? Cities { get; set; }
@@ -30,6 +37,35 @@ namespace Orders.Frontend.Pages.States
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
+        }
+
+        private async Task ShowModalAsync(int id = 0, bool isEdit = false)
+        {
+            IModalReference modalReference;
+
+            if (isEdit)
+            {
+                modalReference = Modal.Show<CityEdit>(string.Empty, new ModalParameters().Add("CityId", id));
+            }
+            else
+            {
+                modalReference = Modal.Show<CityCreate>(string.Empty, new ModalParameters().Add("StateId", StateId));
+            }
+            var result = await modalReference.Result;
+            if (result.Confirmed)
+            {
+                await LoadAsync();
+            }
+        }
+        private void OnItemsPerPageChanged(int itemsPerPage)
+        {
+            PaginationGrid.ItemsPerPage = itemsPerPage;
+        }
+        private async Task FilterCallback(string filter)
+        {
+            Filter = filter;
+            await Filtrar();
+            StateHasChanged();
         }
 
         private async Task LoadAsync()
@@ -136,13 +172,12 @@ namespace Orders.Frontend.Pages.States
                 await LoadCitiesAsync();
                 await myGrid!.RefreshDataAsync();
             }
-        }
+            else
+            {
+                Filter = string.Empty;
 
-        private async Task Refrescar()
-        {
-            Filter = string.Empty;
-
-            await LoadCitiesAsync();
+                await LoadCitiesAsync();
+            }
         }
     }
 }

@@ -15,28 +15,17 @@
         <div class="card-body">
 
             <p>
-                <a class="btn btn-dark btn-sm" href="/categories/create"><i class="bi bi-plus-circle"></i> Nueva categoría</a>
+                <a class="btn btn-dark btn-sm" @onclick=@(() => ShowModalAsync())><i class="bi bi-plus-circle"></i> Nueva categoría</a>
             </p>
 
             <hr />
 
             <div class="row mb-3">
                 <div class="col">
-                    <div class="page-size-chooser"> Items por página:
-                        <select @bind="@PaginationGrid.ItemsPerPage">
-                            <option>5</option>
-                            <option>10</option>
-                            <option>20</option>
-                            <option>50</option>
-                        </select>
-                    </div>
+                    <PageSizeChooser ItemsPerPage="@PaginationGrid.ItemsPerPage" SelectedValueChanged="@OnItemsPerPageChanged" Options="@pageSizeOptions" />
                 </div>
                 <div class="col">
-                    <div class="search-box">
-                        <input type="search" autofocus @bind="Filter" placeholder="Nombre categoría..." />
-                        <button type="button" @onclick="Filtrar" class="btn btn-dark btn-sm"><i class="bi bi-search"></i></button>
-                        <button type="button" @onclick="Refrescar" class="btn btn-dark btn-sm"><i class="bi bi-arrow-clockwise"></i></button>
-                    </div>
+                    <FilterGrid PlaceHolder="Buscar categoría..." CallBack="FilterCallback" />
                 </div>
             </div>
 
@@ -44,18 +33,18 @@
 
             <div id="view-all">
 
-               @*  <GenericList MyList="Categories!">
-                    <Body> *@
+                @*  <GenericList MyList="Categories!">
+                <Body> *@
 
-                            <QuickGrid class="table table-striped table-hover" ItemsProvider="CategoriesProvider" Pagination="PaginationGrid" @ref="myGrid">
-                                <PropertyColumn Property="@(p => p.Name)" Title="Categoría" Class="category-name" />
-                                        <TemplateColumn>
-                                            <a class="btn btn-outline-dark btn-sm" href="/categories/edit/@context.Id"><i class="bi bi-pencil-fill"></i></a>
-                                            <button @onclick=@(() => DeleteAsync(context)) class="btn btn-outline-dark btn-sm"><i class="bi bi-trash3-fill"></i></button>
-                                        </TemplateColumn>
-                                    </QuickGrid>
+                <QuickGrid class="table table-striped table-hover" ItemsProvider="CategoriesProvider" Pagination="PaginationGrid" @ref="myGrid">
+                    <PropertyColumn Property="@(p => p.Name)" Title="Categoría" Class="category-name" />
+                    <TemplateColumn>
+                        <a class="btn btn-outline-dark btn-sm" @onclick=@(() => ShowModalAsync(@context.Id, true)) ><i class="bi bi-pencil-fill"></i></a>
+                        <button @onclick=@(() => DeleteAsync(context)) class="btn btn-outline-dark btn-sm"><i class="bi bi-trash3-fill"></i></button>
+                    </TemplateColumn>
+                </QuickGrid>
 
-                            <Paginator State="@PaginationGrid" />
+                <Paginator State="@PaginationGrid" />
 
                 @*     </Body>
                 </GenericList> *@
@@ -65,11 +54,11 @@
     </div>
 
 </div>
- 
 
 
 
 
 
- 
- 
+
+
+

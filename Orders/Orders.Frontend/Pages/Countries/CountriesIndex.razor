@@ -16,29 +16,17 @@
         <div class="card-body">
 
             <p>
-                <a class="btn btn-dark btn-sm" href="/countries/create"><i class="bi bi-plus-circle"></i> Nuevo País</a>
+                <a class="btn btn-dark btn-sm" @onclick=@(() => ShowModalAsync())><i class="bi bi-plus-circle"></i> Nuevo País</a>
             </p>
 
             <hr />
 
             <div class="row mb-3">
                 <div class="col">
-                    <div class="page-size-chooser">
-                        Items por página:
-                        <select @bind="@PaginationGrid.ItemsPerPage">
-                            <option>5</option>
-                            <option>10</option>
-                            <option>20</option>
-                            <option>50</option>
-                        </select>
-                    </div>
+                    <PageSizeChooser ItemsPerPage="@PaginationGrid.ItemsPerPage" SelectedValueChanged="@OnItemsPerPageChanged" Options="@pageSizeOptions" />
                 </div>
                 <div class="col">
-                    <div class="search-box">
-                        <input type="search" autofocus @bind="Filter" placeholder="Buscar País..." />
-                        <button type="button" class="btn btn-dark btn-sm" @onclick="ApplyFilterAsync"><i class="bi bi-search"></i></button>
-                        <button type="button" class="btn btn-dark btn-sm" @onclick="CleanFilterAsync"><i class="bi bi-arrow-clockwise"></i></button>
-                    </div>
+                    <FilterGrid PlaceHolder="Buscar País..." CallBack="FilterCallback" />
                 </div>
             </div>
 
@@ -55,7 +43,7 @@
                     </TemplateColumn>
                     <PropertyColumn Property="@(p => p.StatesNumber)" Title="N° de Regiones"/>
                     <TemplateColumn>
-                        <a class="btn btn-outline-dark btn-sm" href="/countries/edit/@context.Id"><i class="bi bi-pencil-fill"></i></a>
+                        <a class="btn btn-outline-dark btn-sm" @onclick=@(() => ShowModalAsync(@context.Id, true))><i class="bi bi-pencil-fill"></i></a>
                         <button @onclick=@(() => DeleteAsync(context)) class="btn btn-outline-dark btn-sm"><i class="bi bi-trash3-fill"></i></button>
                     </TemplateColumn>
                         </QuickGrid>

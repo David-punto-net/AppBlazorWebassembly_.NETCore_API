@@ -11,7 +11,7 @@ else
         <div class="register-container p-4 shadow-lg rounded bg-white">
 
             <div class="col-md-12 mb-4">
-                <h2>Registrate</h2>
+                <h3>Registrate</h3>
             </div>
 
             <EditForm Model="userDTO" OnValidSubmit="CreateUserAsync">
@@ -157,9 +157,13 @@ else
                 </div>
 
                 <div class="text-center">
-                    <button class="btn btn-primary w-100" type="submit"><i class="bi bi-floppy2-fill"></i> Registrar</button>
-                </div>
+                    <button class="btn btn-primary w-100" type="submit">Registrar</button>
+                </div> 
             </EditForm>
+
+            <div class="card-footer bg-transparent text-center mt-3">
+                @* <button class="btn btn-primary w-100" type="submit">Registrar</button> *@
+            </div> 
 
         </div>
     </div>

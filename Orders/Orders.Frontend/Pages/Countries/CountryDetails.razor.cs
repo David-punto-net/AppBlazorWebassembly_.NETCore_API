@@ -1,7 +1,11 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.QuickGrid;
+using Orders.Frontend.Pages.Categories;
+using Orders.Frontend.Pages.States;
 using Orders.Frontend.Repositories;
 using Orders.Shared.Entities;
 using System.Net;
@@ -18,8 +22,12 @@ namespace Orders.Frontend.Pages.Countries
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Parameter] public int CountryId { get; set; }
-        
+
         private PaginationState PaginationGrid = new PaginationState { ItemsPerPage = 10 };
+
+        private List<int> pageSizeOptions = new List<int> { 5, 10, 20, 50 };
+
+        [CascadingParameter] private IModalService Modal { get; set; } = default!;
 
         private GridItemsProvider<State>? StatesProvider;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
@@ -30,6 +38,36 @@ namespace Orders.Frontend.Pages.Countries
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
+        }
+
+        private async Task ShowModalAsync(int id = 0, bool isEdit =false)
+        {
+            IModalReference modalReference;
+            if (isEdit)
+            {
+                modalReference = Modal.Show<StateEdit>(string.Empty, new ModalParameters().Add("StateId", id));
+            }
+            else
+            {
+                modalReference = Modal.Show<StateCreate>(string.Empty, new ModalParameters().Add("CountryId", CountryId));
+            }
+            var result = await modalReference.Result;
+            if (result.Confirmed)
+            {
+                await LoadAsync();
+            }
+        }
+
+        private void OnItemsPerPageChanged(int itemsPerPage)
+        {
+            PaginationGrid.ItemsPerPage = itemsPerPage;
+        }
+
+        private async Task FilterCallback(string filter)
+        {
+            Filter = filter;
+            await Filtrar();
+            StateHasChanged();
         }
 
         private async Task LoadAsync()
@@ -48,7 +86,6 @@ namespace Orders.Frontend.Pages.Countries
             }
 
             country = responseHttp.Response;
-
 
             await LoadSateteAsync();
         }
@@ -88,7 +125,6 @@ namespace Orders.Frontend.Pages.Countries
 
                 return GridItemsProviderResult.From(items: responseHttp!.Response!, totalItemCount: totalRegistros);
             };
-
         }
 
         private async Task DeleteAsync(State state)
@@ -129,7 +165,6 @@ namespace Orders.Frontend.Pages.Countries
             });
 
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro eliminado con éxito.");
-
         }
 
         private async Task Filtrar()
@@ -139,14 +174,12 @@ namespace Orders.Frontend.Pages.Countries
                 await LoadSateteAsync();
                 await myGrid!.RefreshDataAsync();
             }
+            else
+            {
+                Filter = string.Empty;
+
+                await LoadSateteAsync();
+            }
         }
-
-        private async Task Refrescar()
-        {
-            Filter = string.Empty;
-
-            await LoadSateteAsync();
-        }
-
     }
 }

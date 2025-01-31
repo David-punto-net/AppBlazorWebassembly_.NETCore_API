@@ -1,4 +1,6 @@
-﻿using CurrieTechnologies.Razor.SweetAlert2;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.QuickGrid;
@@ -18,6 +20,9 @@ namespace Orders.Frontend.Pages.Categories
 
         private PaginationState PaginationGrid = new PaginationState { ItemsPerPage = 10 };
 
+        private List<int> pageSizeOptions = new List<int> { 5, 10, 20, 50 };
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
+
         private GridItemsProvider<Category>? CategoriesProvider;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
         public IQueryable<Category>? Categories { get; set; }
@@ -27,6 +32,37 @@ namespace Orders.Frontend.Pages.Categories
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
+        }
+
+        private async Task ShowModalAsync(int id = 0, bool isEdit = false)
+        {
+            IModalReference modalReference;
+
+            if (isEdit)
+            {
+                modalReference = Modal.Show<CategoryEdit>(string.Empty, new ModalParameters().Add("Id", id));
+            }
+            else
+            {
+                modalReference = Modal.Show<CategoryCreate>();
+            }
+            var result = await modalReference.Result;
+            if (result.Confirmed)
+            {
+                await LoadAsync();
+            }
+        }
+
+        private void OnItemsPerPageChanged(int itemsPerPage)
+        {
+            PaginationGrid.ItemsPerPage = itemsPerPage;
+        }
+
+        private async Task FilterCallback(string filter)
+        {
+            Filter = filter;
+            await Filtrar();
+            StateHasChanged();
         }
 
         private async Task LoadAsync()
@@ -117,13 +153,13 @@ namespace Orders.Frontend.Pages.Categories
                 await LoadAsync();
                 await myGrid!.RefreshDataAsync();
             }
-        }
+            else
+            {
+                Filter = string.Empty;
 
-        private async Task Refrescar()
-        {
-            Filter = string.Empty;
-
-            await LoadAsync();
+                await LoadAsync();
+            }
         }
     }
 }
+

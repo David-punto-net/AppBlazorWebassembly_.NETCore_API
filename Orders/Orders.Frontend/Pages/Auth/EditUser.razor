@@ -9,8 +9,8 @@
 else
 {
 
-    <div class="center-form">
-        <div class="card mt-3">
+    <div class="center-form mt-5 d-flex justify-content-center align-items-center">
+        <div class="card mt-3 shadow-lg rounded bg-white">
 
             <div class="card-header">
                 <i class="bi bi-person-fill"></i> <strong>Editar Usuario</strong>
@@ -30,46 +30,53 @@ else
 
                                 <div class="col-md-6">
 
-    
-                                    <div class="mb-3">
-                                        <label>Nombres:</label>
-                                        <div>
-                                            <InputText class="form-control" @bind-Value="@user.FirstName" />
-                                            <ValidationMessage For="@(() => user.FirstName)" />
+   
+
+                                    <div class="form-group mb-3">
+                                        <label for="first-name">Nombres:</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                                            <InputText id="first-name" class="form-control" @bind-Value="@user.FirstName" />
                                         </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label>Apellidos:</label>
-                                        <div>
-                                            <InputText class="form-control" @bind-Value="@user.LastName" />
-                                            <ValidationMessage For="@(() => user.LastName)" />
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label>Documento:</label>
-                                        <div>
-                                            <InputText class="form-control" @bind-Value="@user.Document" />
-                                            <ValidationMessage For="@(() => user.Document)" />
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label>Teléfono:</label>
-                                        <div>
-                                            <InputText class="form-control" @bind-Value="@user.PhoneNumber" />
-                                            <ValidationMessage For="@(() => user.PhoneNumber)" />
-                                        </div>
+                                        <ValidationMessage For="@(() => user.FirstName)" />
                                     </div>
 
+                                    <div class="form-group mb-3">
+                                        <label for="last-name">Apellidos:</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                                            <InputText id="last-name" class="form-control" @bind-Value="@user.LastName" />
+                                        </div>
+                                        <ValidationMessage For="@(() => user.LastName)" />
+                                    </div>
 
+                                    <div class="form-group mb-3">
+                                        <label for="document">Documento:</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+                                            <InputText id="document" class="form-control" @bind-Value="@user.Document" />
+                                        </div>
+                                        <ValidationMessage For="@(() => user.Document)" />
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="phone">Teléfono:</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
+                                            <InputText id="phone" class="form-control" @bind-Value="@user.PhoneNumber" />
+                                        </div>
+                                        <ValidationMessage For="@(() => user.PhoneNumber)" />
+                                    </div>
+                               
                                 </div>
 
                                 <div class="col-md-6">
-             
 
-                                    <div class="mb-3">
-                                        <label>País:</label>
-                                        <div>
-                                            <select class="form-select" @onchange="CountryChangedAsync">
+                                    <div class="form-group mb-3">
+                                        <label for="country">País:</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-globe"></i></span>
+                                            <select id="country" class="form-select" @onchange="CountryChangedAsync">
                                                 <option value="0">Seleccione un país</option>
                                                 @if (countries is not null)
                                                 {
@@ -81,10 +88,12 @@ else
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label>Región:</label>
-                                        <div>
-                                            <select class="form-select" @onchange="StateChangedAsync">
+
+                                    <div class="form-group mb-3">
+                                        <label for="state">Región:</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-map"></i></span>
+                                            <select id="state" class="form-select" @onchange="StateChangedAsync">
                                                 <option value="0">Seleccione una región</option>
                                                 @if (states is not null)
                                                 {
@@ -96,10 +105,12 @@ else
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label>Ciudad:</label>
-                                        <div>
-                                            <select class="form-select" @bind="user.CityId">
+
+                                    <div class="form-group mb-3">
+                                        <label for="city">Ciudad:</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                            <select id="city" class="form-select" @bind="user.CityId">
                                                 <option value="0">Seleccione una ciudad</option>
                                                 @if (cities is not null)
                                                 {
@@ -109,17 +120,22 @@ else
                                                     }
                                                 }
                                             </select>
-                                            <ValidationMessage For="@(() => user.CityId)" />
                                         </div>
+                                        <ValidationMessage For="@(() => user.CityId)" />
                                     </div>
+                    
 
-                                       <label>Dirección:</label>
-                                    <div>
-                                        <InputText class="form-control" @bind-Value="@user.Address" />
+                                    <div class="form-group mb-3">
+                                        <label for="address">Dirección:</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-house-fill"></i></span>
+                                            <InputText id="address" class="form-control" @bind-Value="@user.Address" />
+                                        </div>
                                         <ValidationMessage For="@(() => user.Address)" />
                                     </div>
 
                                 </div>
+
 
                                 <div class="form-group mb-3">
                                     <div class="mb-3 label-photo">
@@ -132,8 +148,16 @@ else
                         </div>
                     </div>
 
-                    <button class="btn btn-success" type="submit"><i class="bi bi-floppy2-fill"></i> Guardar Cambios</button>
-                    <a class="btn btn-dark" href="/changePassword"><i class="bi bi-key" /> Cambiar Contraseña</a>
+                    <div class="card-footer bg-transparent text-center mt-3">
+                        <div class="text-center mb-2">
+                            <button class="btn btn-primary w-100" type="submit">Guardar</button>
+                        </div>
+                        <div class="text-center">
+                            <a class="btn btn-secondary w-100" @onclick=@(() => ShowModal())>Cambiar Contraseña</a>
+                             @* <a class="btn btn-secondary w-100" href="/changePassword">Cambiar Contraseña</a>  *@
+                        </div>
+                    </div>
+
                 </EditForm>
 
             </div>
@@ -141,3 +165,5 @@ else
     </div>
 
 }
+
+

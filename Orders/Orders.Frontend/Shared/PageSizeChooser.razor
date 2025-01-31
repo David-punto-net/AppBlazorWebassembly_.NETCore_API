@@ -1,0 +1,10 @@
+﻿<div class="page-size-chooser">
+    Items por página:
+    <select @onchange="HandleChange" value="@ItemsPerPage">
+        @foreach (var option in Options)
+        {
+            <option value="@option">@option</option>
+        }
+    </select>
+</div>
+
