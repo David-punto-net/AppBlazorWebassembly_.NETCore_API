@@ -1,0 +1,85 @@
+﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
+
+
+<div class="center-form d-flex justify-content-center align-items-center">
+    <div class="card">
+
+        <div class="card-header">
+            <strong>Nuevo Producto</strong>
+        </div>
+
+        <div class="card-body">
+            <EditForm EditContext="editContext" OnValidSubmit="OnDataAnnotationsValidatedAsync">
+                <DataAnnotationsValidator />
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label>Nombre:</label>
+                            <div>
+                                <InputText class="form-control" @bind-Value="@ProductDTO.Name" />
+                                <ValidationMessage For="@(() => ProductDTO.Name)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Descripción:</label>
+                            <div>
+                                <InputText class="form-control" @bind-Value="@ProductDTO.Description" />
+                                <ValidationMessage For="@(() => ProductDTO.Description)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Precio:</label>
+                            <div>
+                                <InputNumber class="form-control" @bind-Value="@ProductDTO.Price" />
+                                <ValidationMessage For="@(() => ProductDTO.Price)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Inventario:</label>
+                            <div>
+                                <InputNumber class="form-control" @bind-Value="@ProductDTO.Stock" />
+                                <ValidationMessage For="@(() => ProductDTO.Stock)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label>Categorías:</label>
+                            <div>
+                                <MultipleSelector NonSelected="nonSelected" Selected="selected" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
+                        </div>
+
+                        @if (IsEdit)
+                        {
+                            <div class="mb-3">
+                                <button type="button" class="btn btn-outline-primary" @onclick="AddImageAction">
+                                    <i class="bi bi-cart-plus" /> Agregar Imagenes
+                                </button>
+                                <button type="button" class="btn btn-outline-danger" @onclick="RemoveImageAction">
+                                    <i class="bi bi-trash" /> Eliminar Última Imagén
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="card-footer bg-transparent text-center mt-3">
+                    <div class="text-center mb-2">
+                        <button class="btn btn-sm btn-primary w-100" type="submit">Guardar</button>
+                    </div>
+                    <div class="text-center">
+                        <a class="btn btn-sm btn-secondary w-100" href="/products">Regresar</a>
+                    </div>
+                </div>
+
+            </EditForm>
+
+        </div>
+    </div>
+</div>
+

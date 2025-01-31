@@ -76,6 +76,10 @@ builder.Services.AddScoped<ICategoriesUnitsOfWork, CategoriesUnitsOfWork>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
 
+builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
+builder.Services.AddScoped<IProductsUnitOfWork, ProductsUnitOfWork>();
+
+
 builder.Services.AddScoped<IMailHelper, MailHelper>();
 
 //TODO: cambiar configuracion del password

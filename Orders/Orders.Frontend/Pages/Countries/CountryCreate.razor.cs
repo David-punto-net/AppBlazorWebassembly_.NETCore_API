@@ -48,8 +48,7 @@ namespace Orders.Frontend.Pages.Countries
                 await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro creado con éxito.");
             }
         }
-
-        private async Task Return()
+        private void Return()
         {
             countryForm!.FormPressReturn = true;
             countryForm!.FormPressCreate = false;

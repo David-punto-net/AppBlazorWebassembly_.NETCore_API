@@ -1,17 +1,17 @@
-ï»¿using Blazored.Modal;
 using Blazored.Modal.Services;
+using Blazored.Modal;
 using CurrieTechnologies.Razor.SweetAlert2;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.QuickGrid;
+using Microsoft.AspNetCore.Components;
+using Orders.Frontend.Pages.Categories;
 using Orders.Frontend.Repositories;
 using Orders.Shared.Entities;
 
-namespace Orders.Frontend.Pages.Categories
+namespace Orders.Frontend.Pages.Products
 {
-    [Authorize(Roles = "Admin")]
-    public partial class CategoriesIndex
+    public partial class ProductsIndex
     {
+
         private int totalRegistros;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -22,11 +22,11 @@ namespace Orders.Frontend.Pages.Categories
         private List<int> pageSizeOptions = new List<int> { 5, 10, 20, 50 };
         [CascadingParameter] IModalService Modal { get; set; } = default!;
 
-        private GridItemsProvider<Category>? CategoriesProvider;
+        private GridItemsProvider<Product>? ProductsProvider;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
-        public IQueryable<Category>? Categories { get; set; }
+        public IQueryable<Product>? Products { get; set; }
 
-        private QuickGrid<Category>? myGrid;
+        private QuickGrid<Product>? myGrid;
 
         protected override async Task OnInitializedAsync()
         {
@@ -39,12 +39,14 @@ namespace Orders.Frontend.Pages.Categories
 
             if (isEdit)
             {
-                modalReference = Modal.Show<CategoryEdit>(string.Empty, new ModalParameters().Add("Id", id));
+                //modalReference = Modal.Show<ProductEdit>(string.Empty, new ModalParameters().Add("Id", id));
+                modalReference = Modal.Show<ProductCreate>(string.Empty, new ModalParameters().Add("Id", id));
             }
             else
             {
-                modalReference = Modal.Show<CategoryCreate>();
+                modalReference = Modal.Show<ProductCreate>();
             }
+
             var result = await modalReference.Result;
             if (result.Confirmed)
             {
@@ -66,7 +68,7 @@ namespace Orders.Frontend.Pages.Categories
 
         private async Task LoadAsync()
         {
-            var url = "api/categories/totalRecord";
+            var url = "api/products/totalRecord";
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"?filter={Filter}";
@@ -82,15 +84,15 @@ namespace Orders.Frontend.Pages.Categories
 
             totalRegistros = responseHttp.Response;
 
-            CategoriesProvider = async req =>
+            ProductsProvider = async req =>
             {
-                var url = $"api/categories/pagination?page={req.StartIndex}&recordsnumber={req.Count}";
+                var url = $"api/products?page={req.StartIndex}&recordsnumber={req.Count}";
                 if (!string.IsNullOrEmpty(Filter))
                 {
                     url += $"&filter={Filter}";
                 }
 
-                var responseHttp = await Repository.GetAsync<List<Category>>(url);
+                var responseHttp = await Repository.GetAsync<List<Product>>(url);
                 if (responseHttp.Error)
                 {
                     var message = await responseHttp.GetErrorMessageAsync();
@@ -101,12 +103,12 @@ namespace Orders.Frontend.Pages.Categories
             };
         }
 
-        private async Task DeleteAsync(Category category)
+        private async Task DeleteAsync(Product category)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
-                Title = "ConfirmaciÃ³n",
-                Text = $"Â¿Estas seguro de borrar la categoÃ­a {category.Name}?",
+                Title = "Confirmación",
+                Text = $"¿Estas seguro de borrar el producto: {category.Name}?",
                 Icon = SweetAlertIcon.Warning,
                 ShowCancelButton = true
             });
@@ -116,12 +118,12 @@ namespace Orders.Frontend.Pages.Categories
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<Category>($"/api/categories/{category.Id}");
+            var responseHttp = await Repository.DeleteAsync<Product>($"/api/products/{category.Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("/categories");
+                    NavigationManager.NavigateTo("/products");
                 }
                 else
                 {
@@ -142,7 +144,7 @@ namespace Orders.Frontend.Pages.Categories
                 Timer = 3000
             });
 
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro eliminado con Ã©xito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro eliminado con éxito.");
         }
 
         private async Task Filtrar()
@@ -161,4 +163,3 @@ namespace Orders.Frontend.Pages.Categories
         }
     }
 }
-
