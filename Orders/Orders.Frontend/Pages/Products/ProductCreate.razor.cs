@@ -57,7 +57,7 @@ namespace Orders.Frontend.Pages.Products
                     return;
                 }
 
-                await BlazoredModal.CloseAsync(ModalResult.Ok());
+                //await BlazoredModal.CloseAsync(ModalResult.Ok());
 
                 NavigationManager.NavigateTo("/products");
 

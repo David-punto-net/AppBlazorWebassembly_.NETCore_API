@@ -20,7 +20,7 @@ namespace Orders.Frontend.Pages.Products
         private PaginationState PaginationGrid = new PaginationState { ItemsPerPage = 10 };
 
         private List<int> pageSizeOptions = new List<int> { 5, 10, 20, 50 };
-        [CascadingParameter] IModalService Modal { get; set; } = default!;
+        //[CascadingParameter] IModalService Modal { get; set; } = default!;
 
         private GridItemsProvider<Product>? ProductsProvider;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
@@ -33,26 +33,30 @@ namespace Orders.Frontend.Pages.Products
             await LoadAsync();
         }
 
-        private async Task ShowModalAsync(int id = 0, bool isEdit = false)
-        {
-            IModalReference modalReference;
+        //private async Task ShowModalAsync(int id = 0, bool isEdit = false)
+        //{
+        //    IModalReference modalReference;
 
-            if (isEdit)
-            {
-                //modalReference = Modal.Show<ProductEdit>(string.Empty, new ModalParameters().Add("Id", id));
-                modalReference = Modal.Show<ProductCreate>(string.Empty, new ModalParameters().Add("Id", id));
-            }
-            else
-            {
-                modalReference = Modal.Show<ProductCreate>();
-            }
+        //    if (isEdit)
+        //    {
+        //        //modalReference = Modal.Show<ProductEdit>(string.Empty, new ModalParameters().Add("Id", id));
+        //        modalReference = Modal.Show<ProductCreate>(string.Empty, new ModalParameters().Add("Id", id));
+        //    }
+        //    else
+        //    {
+        //        var options = new ModalOptions
+        //        {
+        //            Class = "custom-modal-width"
+        //        };
+        //        modalReference = Modal.Show<ProductCreate>(options);
+        //    }
 
-            var result = await modalReference.Result;
-            if (result.Confirmed)
-            {
-                await LoadAsync();
-            }
-        }
+        //    var result = await modalReference.Result;
+        //    if (result.Confirmed)
+        //    {
+        //        await LoadAsync();
+        //    }
+        //}
 
         private void OnItemsPerPageChanged(int itemsPerPage)
         {

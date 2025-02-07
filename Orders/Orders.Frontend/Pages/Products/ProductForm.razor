@@ -1,73 +1,100 @@
 ﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
 
 
-<div class="center-form d-flex justify-content-center align-items-center">
-    <div class="card">
+<div class="center-form mt-5 d-flex justify-content-center align-items-center">
+    <div class="card mt-3 shadow-lg rounded bg-white">
 
         <div class="card-header">
             <strong>Nuevo Producto</strong>
         </div>
 
         <div class="card-body">
+
             <EditForm EditContext="editContext" OnValidSubmit="OnDataAnnotationsValidatedAsync">
                 <DataAnnotationsValidator />
 
                 <div class="row">
-                    <div class="col-6">
-                        <div class="mb-3">
-                            <label>Nombre:</label>
-                            <div>
-                                <InputText class="form-control" @bind-Value="@ProductDTO.Name" />
-                                <ValidationMessage For="@(() => ProductDTO.Name)" />
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label>Descripción:</label>
-                            <div>
-                                <InputText class="form-control" @bind-Value="@ProductDTO.Description" />
-                                <ValidationMessage For="@(() => ProductDTO.Description)" />
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label>Precio:</label>
-                            <div>
-                                <InputNumber class="form-control" @bind-Value="@ProductDTO.Price" />
-                                <ValidationMessage For="@(() => ProductDTO.Price)" />
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label>Inventario:</label>
-                            <div>
-                                <InputNumber class="form-control" @bind-Value="@ProductDTO.Stock" />
-                                <ValidationMessage For="@(() => ProductDTO.Stock)" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="mb-3">
-                            <label>Categorías:</label>
-                            <div>
-                                <MultipleSelector NonSelected="nonSelected" Selected="selected" />
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
-                        </div>
 
-                        @if (IsEdit)
-                        {
-                            <div class="mb-3">
-                                <button type="button" class="btn btn-outline-primary" @onclick="AddImageAction">
-                                    <i class="bi bi-cart-plus" /> Agregar Imagenes
-                                </button>
-                                <button type="button" class="btn btn-outline-danger" @onclick="RemoveImageAction">
-                                    <i class="bi bi-trash" /> Eliminar Última Imagén
-                                </button>
+                    <div class="col-md-12 mt-3">
+
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="form-group mb-3">
+                                    <label for="first-name">Nombre:</label>
+                                    <div class="input-group">
+                                        @* <span class="input-group-text"><i class="bi bi-person-fill"></i></span> *@
+                                        <InputText class="form-control" @bind-Value="@ProductDTO.Name" />
+                                    </div>
+                                    <ValidationMessage For="@(() => ProductDTO.Name)" />
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="first-name">Descripción:</label>
+                                    <div class="input-group">
+                                        @* <span class="input-group-text"><i class="bi bi-person-fill"></i></span> *@
+                                        <InputText class="form-control" @bind-Value="@ProductDTO.Description" />
+                                    </div>
+                                    <ValidationMessage For="@(() => ProductDTO.Description)" />
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="first-name">Precio:</label>
+                                    <div class="input-group">
+                                        @* <span class="input-group-text"><i class="bi bi-person-fill"></i></span> *@
+                                        <InputNumber class="form-control" @bind-Value="@ProductDTO.Price" />
+                                    </div>
+                                    <ValidationMessage For="@(() => ProductDTO.Price)" />
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="first-name">Inventario:</label>
+                                    <div class="input-group">
+                                        @* <span class="input-group-text"><i class="bi bi-person-fill"></i></span> *@
+                                        <InputNumber class="form-control" @bind-Value="@ProductDTO.Stock" />
+                                    </div>
+                                    <ValidationMessage For="@(() => ProductDTO.Stock)" />
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <div class="input-group">
+                                        <InputImg Label="Seleccionar Imagen" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
+                                    </div>
+                                </div>
+    
+
                             </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group mb-3">
+                                    <label for="first-name">Categorías:</label>
+                                    <div class="input-group">
+                                        <MultipleSelector NonSelected="nonSelected" Selected="selected" />
+                                    </div>
+                                </div>
+
+                                @if (IsEdit)
+                                {
+                                    <div class="mb-3">
+                                        <button type="button" class="btn btn-outline-primary" @onclick="AddImageAction">
+                                            <i class="bi bi-cart-plus" /> Agregar Imagenes
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger" @onclick="RemoveImageAction">
+                                            <i class="bi bi-trash" /> Eliminar Última Imagén
+                                        </button>
+                                    </div>
+                                }
+
+                            </div>
+
+                        </div>
+                        @if (IsEdit && ProductDTO.ProductImages is not null)
+                        {
+                            <CarouselView Images="@ProductDTO.ProductImages" />
                         }
                     </div>
                 </div>
-
                 <div class="card-footer bg-transparent text-center mt-3">
                     <div class="text-center mb-2">
                         <button class="btn btn-sm btn-primary w-100" type="submit">Guardar</button>
@@ -79,7 +106,10 @@
 
             </EditForm>
 
+           
+
         </div>
     </div>
 </div>
+
 

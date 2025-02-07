@@ -1,13 +1,32 @@
 ﻿<div>
-    <label>@Label</label>
+    @* <label>@Label</label> *@
     <div>
-        <InputFile OnChange="OnChange" accept=".jpg, jpeg, .png"/>
+        @* <InputFile OnChange="OnChange" accept=".jpg, jpeg, .png"/> *@
+
+@*         <MudFileUpload T="IBrowserFile" Accept=".png, .jpg, .jpeg" FilesChanged="UploadFiles" MaximumFileCount="100">
+            <ActivatorContent>
+                 <MudFab Variant="Variant.Filled"
+                         Color="Color.Secondary"
+                         StartIcon="@Icons.Material.Filled.Image"
+                         Label="Load picture" />
+            </ActivatorContent>
+        </MudFileUpload> *@
+
+        <MudFileUpload T="IReadOnlyList<IBrowserFile>" Accept=".png, .jpg, .jpeg" FilesChanged="UploadFiles" MaximumFileCount="100">
+            <ActivatorContent>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.Image"> @Label
+                </MudButton>
+            </ActivatorContent>
+        </MudFileUpload>
 
     </div>
 </div>
 
 <div>
-    @if(imageBase64 is not null)
+   @*  
+       @if(imageBase64 is not null)
     {
         <div>
             <did style="margin: 10px">
@@ -25,5 +44,17 @@
             </did>
 
         </div>
+    }
+ *@
+    @if (_files != null)
+    {
+        <MudList T="string">
+            @foreach (var file in _files)
+            {
+                    <MudListItem Icon="@Icons.Material.Filled.AttachFile" @key="@file">
+                        @file.Name <code>@file.Size bytes</code>
+                    </MudListItem>
+            }
+        </MudList>
     }
 </div>

@@ -1,5 +1,15 @@
-﻿<div class="search-box">
+﻿@*  
+<div class="search-box">
     <input type="search" autofocus @bind-value="TextToFilter" placeholder=@PlaceHolder />
     <button type="button" @onclick="ApplyFilterAsync" class="btn btn-dark btn-sm"><i class="bi bi-search"></i></button>
     <button type="button" @onclick="CleanFilterAsync" class="btn btn-dark btn-sm"><i class="bi bi-arrow-clockwise"></i></button>
-</div>
+</div> 
+ *@
+
+    <div class="container-fluid">
+    <form class="d-flex" role="search">
+        <input class="form-control small me-2" type="search" autofocus @bind-value="TextToFilter" placeholder=@PlaceHolder />
+        <button type="button" @onclick="ApplyFilterAsync" class="btn btn-dark btn-sm me-1"><i class="bi bi-search"></i></button>
+        <button type="button" @onclick="CleanFilterAsync" class="btn btn-dark btn-sm"><i class="bi bi-arrow-clockwise"></i></button>
+    </form>
+</div> 

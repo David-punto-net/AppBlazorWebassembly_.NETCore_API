@@ -1,0 +1,60 @@
+﻿.center-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+}
+
+.card {
+    width: 100%;
+    max-width: 1260px; /* Ancho máximo del formulario */
+    margin: 0 auto;
+}
+
+label, .label-photo {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555555;
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+}
+
+    .input-group-text i {
+        color: #6c757d;
+    }
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
+
+
+.btn-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+    .btn-link:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }

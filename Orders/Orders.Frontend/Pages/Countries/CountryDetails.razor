@@ -61,14 +61,14 @@ else
                     <Body> *@
 
                     <QuickGrid class="table table-striped table-hover" ItemsProvider="StatesProvider" Pagination="PaginationGrid" @ref="myGrid">
-                        <TemplateColumn Title="Región" Class="state-name">
+                        <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn Title="Región" Class="state-name">
                             <a href="/states/details/@context.Id">@context.Name</a>
-                        </TemplateColumn>
-                            <PropertyColumn Property="@(p => p.CitiesNumber)" Title="N° de Ciudades" />
-                            <TemplateColumn>
+                        </Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
+                            <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(p => p.CitiesNumber)" Title="N° de Ciudades" />
+                        <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
                             <a class="btn btn-outline-dark btn-sm" @onclick=@(() => ShowModalAsync(@context.Id, true))><i class="bi bi-pencil-fill"></i></a>
                              <button @onclick=@(() => DeleteAsync(context)) class="btn btn-outline-dark btn-sm"><i class="bi bi-trash3-fill"></i></button>
-                            </TemplateColumn>
+                            </Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
                         </QuickGrid>
 
                         <Paginator State="PaginationGrid" />

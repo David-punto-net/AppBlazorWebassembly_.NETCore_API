@@ -102,18 +102,32 @@ code {
     color: #c02d76;
 }
 
+
+
+
+
 .multiple-selector {
     display: flex;
+    flex-direction: column; 
+    gap: 10px; 
+}
+
+@media (min-width: 600px) {
+    .multiple-selector {
+        flex-direction: row; 
+    }
 }
 
 .selectable-ul {
-    height: 200px;
+    height: 250px;
     overflow-y: auto;
     list-style-type: none;
-    width: 170px;
+    width: 250px; 
     padding: 0;
     border-radius: 3px;
     border: 1px solid #ccc;
+    margin: 0; 
+    flex: 1;
 }
 
     .selectable-ul li {
@@ -124,14 +138,28 @@ code {
     }
 
         .selectable-ul li:hover {
-            background-color: #08c
+            background-color: #e0f7fa;
         }
 
-.multiple-selector-botones {
+.selector-multiple-botones {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
     justify-content: center;
-    padding: 5px
+    padding: 5px;
 }
 
-    .multiple-selector-botones button {
+    .selector-multiple-botones button {
+        margin: 5px;
+        border: none;
+    }
+
+@media (max-width: 599px) {
+    .selector-multiple-botones {
+        flex-direction: row; 
+    }
+
+        .selector-multiple-botones button {
+            margin: 5px 0; 
+        }
+}
+

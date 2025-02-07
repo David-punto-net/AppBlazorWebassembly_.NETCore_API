@@ -5,14 +5,9 @@ namespace Orders.Frontend.Shared
 {
     public partial class MultipleSelector
     {
-        private string addAllText = ">>";
-        private string removeAllText = "<<";
 
-        [Parameter]
-        public List<MultipleSelectorModel> NonSelected { get; set; } = new();
-
-        [Parameter]
-        public List<MultipleSelectorModel> Selected { get; set; } = new();
+        [Parameter] public List<MultipleSelectorModel> NonSelected { get; set; } = new();
+        [Parameter] public List<MultipleSelectorModel> Selected { get; set; } = new();
 
         private void Select(MultipleSelectorModel item)
         {

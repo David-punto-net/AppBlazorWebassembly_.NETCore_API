@@ -14,7 +14,8 @@
         <div class="card-body">
 
             <p>
-                <a class="btn btn-dark btn-sm" @onclick=@(() => ShowModalAsync())><i class="bi bi-plus-circle"></i> Nuevo Producto</a>
+                @* <a class="btn btn-dark btn-sm" @onclick=@(() => ShowModalAsync())><i class="bi bi-plus-circle"></i> Nuevo Producto</a> *@
+                <a class="btn btn-dark btn-sm" href="/products/create"><i class="bi bi-plus-circle"></i> Nuevo Producto</a>
             </p>
 
             <hr />
@@ -32,26 +33,31 @@
 
             <div id="view-all">
 
-                @*  <GenericList MyList="Categories!">
-                <Body> *@
+                @*  
+                 <GenericList MyList="Categories!">
+                <Body>
+                 *@
 
                 <QuickGrid class="table table-striped table-hover" ItemsProvider="ProductsProvider" Pagination="PaginationGrid" @ref="myGrid">
-                    <PropertyColumn Property="@(p => p.Name)" Title="Producto" Class="products-name" />
-                    <PropertyColumn Property="@(p => p.Description)" Title="Descripción" />
-                    <PropertyColumn Property="@(p => p.Price)" Title="Precio" />
-                    <PropertyColumn Property="@(p => p.Stock)" Title="Stock" />
-                    <PropertyColumn Property="@(p => p.ProductCategoriesNumber)" Title="N° categorias" />
-                    <PropertyColumn Property="@(p => p.ProductImages)" Title="Imagen" />
-                    <TemplateColumn>
-                        <a class="btn btn-outline-dark btn-sm" @onclick=@(() => ShowModalAsync(@context.Id, true))><i class="bi bi-pencil-fill"></i></a>
+                    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(p => p.Name)" Title="Producto" Class="products-name" />
+                    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(p => p.Description)" Title="Descripción" />
+                    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(p => p.Price)" Title="Precio $" Format="N0" Align="Microsoft.AspNetCore.Components.QuickGrid.Align.End" />
+                    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(p => p.Stock)" Title="Stock" Format="N0" Align="Microsoft.AspNetCore.Components.QuickGrid.Align.Center" />
+                    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(p => p.ProductCategoriesNumber)" Title="N° categorias" Align="Microsoft.AspNetCore.Components.QuickGrid.Align.Center" />
+                    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(p => p.MainImage)" Title="Imagen" />
+                    <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
+                        <a class="btn btn-outline-dark btn-sm" href="/products/edit/@context.Id"><i class="bi bi-pencil-fill"></i></a>
+                        @* <a class="btn btn-outline-dark btn-sm" @onclick=@(() => ShowModalAsync(@context.Id, true))><i class="bi bi-pencil-fill"></i></a> *@
                         <button @onclick=@(() => DeleteAsync(context)) class="btn btn-outline-dark btn-sm"><i class="bi bi-trash3-fill"></i></button>
-                    </TemplateColumn>
+                    </Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
                 </QuickGrid>
 
                 <Paginator State="@PaginationGrid" />
 
-                @*     </Body>
-                </GenericList> *@
+                @*    
+                 </Body>
+                </GenericList> 
+                *@
 
             </div>
         </div>
