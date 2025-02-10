@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.FileProviders.Physical;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Orders.Backend.Data;
@@ -56,7 +58,8 @@ builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DockerConne
 
 builder.Services.AddTransient<SeedDb>();
 
-builder.Services.AddScoped<IFileStorage, FileStorage>();
+//builder.Services.AddScoped<IFileStorage, FileStorage>();// AZURE
+builder.Services.AddScoped<IFileStorage, FileStorageLocal>(); // Local
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericUnitsOfWork<>), typeof(GenericUnitsOfWork<>));
@@ -136,6 +139,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+/*
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider
+    (
+        //Path.Combine(builder.Environment.WebRootPath,"Images")
+        Path.Combine("C:\\AppDesarrollo\\LocalStorage", "users")
+     ),
+    RequestPath = "/users"
+    //RequestPath = "/Images"
+});
+*/
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

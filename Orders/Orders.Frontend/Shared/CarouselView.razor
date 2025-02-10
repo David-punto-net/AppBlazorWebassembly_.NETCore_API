@@ -9,11 +9,15 @@
        
         @foreach (var image in Images)
         {
+        @* @if (image.StartsWith("https://")) *@
+            @if (image.StartsWith("C:"))
+        {
             <MudCarouselItem Transition="transition" Color="@Color.Primary">
                 <div class="d-flex" style="height:100%; justify-content:center">
                     <img src="@image"/>
                 </div>
             </MudCarouselItem>
+        }
         }
 
     </MudCarousel>

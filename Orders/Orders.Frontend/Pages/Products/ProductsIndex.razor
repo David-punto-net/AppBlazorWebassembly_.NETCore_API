@@ -44,7 +44,10 @@
                     <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(p => p.Price)" Title="Precio $" Format="N0" Align="Microsoft.AspNetCore.Components.QuickGrid.Align.End" />
                     <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(p => p.Stock)" Title="Stock" Format="N0" Align="Microsoft.AspNetCore.Components.QuickGrid.Align.Center" />
                     <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(p => p.ProductCategoriesNumber)" Title="N° categorias" Align="Microsoft.AspNetCore.Components.QuickGrid.Align.Center" />
-                    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(p => p.MainImage)" Title="Imagen" />
+                    @* <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(p => p.MainImage)" Title="Imagen" /> *@
+                    <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
+                        <img src="@context.MainImage" style="width:100px;" />
+                        </Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
                     <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
                         <a class="btn btn-outline-dark btn-sm" href="/products/edit/@context.Id"><i class="bi bi-pencil-fill"></i></a>
                         @* <a class="btn btn-outline-dark btn-sm" @onclick=@(() => ShowModalAsync(@context.Id, true))><i class="bi bi-pencil-fill"></i></a> *@

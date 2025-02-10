@@ -19,6 +19,48 @@ namespace Orders.Backend.Repositories.Implementations
             _fileStorage = fileStorage;
         }
 
+        public override async Task<ActionResponse<Product>> DeleteAsync(int Id)
+        {
+            var product = await _context.Products
+                                 .Include(x => x.ProductCategories)
+                                 .Include(x => x.ProductImages)
+                                 .FirstOrDefaultAsync(x => x.Id == Id);
+            if (product == null)
+            {
+                return new ActionResponse<Product>
+                {
+                    WassSuccees = false,
+                    Message = "Producto no encontrado"
+                };
+            }
+
+            foreach (var productImage in product.ProductImages!)
+            {
+                await _fileStorage.RemoveFileAsync(productImage.Image, "products");
+            }
+
+            try
+            {
+                _context.ProductCategories.RemoveRange(product.ProductCategories!);
+                _context.ProductImages.RemoveRange(product.ProductImages!);
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+
+                return new ActionResponse<Product>
+                {
+                    WassSuccees = true,
+                };
+            }
+            catch
+            {
+                return new ActionResponse<Product>
+                {
+                    WassSuccees = false,
+                    Message = "No se puede borrar el producto, porque tiene registros relacionados"
+                };
+            }
+        }
+
         public override async Task<ActionResponse<IEnumerable<Product>>> GetAsync(PaginationDTO pagination)
         {
             var queryable = _context.Products
@@ -98,7 +140,7 @@ namespace Orders.Backend.Repositories.Implementations
                     var photoProduct = Convert.FromBase64String(productImage);
                     newProduct.ProductImages.Add(new ProductImage
                     {
-                        //TODO: Almacena Imagen 
+                        //TODO: Almacena Imagen
                         Image = await _fileStorage.SaveFileAsync(photoProduct, ".jpg", "products")
                     });
                 }
@@ -191,7 +233,6 @@ namespace Orders.Backend.Repositories.Implementations
                 {
                     WassSuccees = false,
                     Message = "Ya existe un producto con el mismo nombre."
-
                 };
             }
             catch (Exception exception)
@@ -203,6 +244,72 @@ namespace Orders.Backend.Repositories.Implementations
                 };
             }
         }
+
+        public async Task<ActionResponse<ImageDTO>> AddImageAsync(ImageDTO imageDTO)
+        {
+            var product = await _context.Products
+            .Include(x => x.ProductImages)
+            .FirstOrDefaultAsync(x => x.Id == imageDTO.ProductId);
+            if (product == null)
+            {
+                return new ActionResponse<ImageDTO>
+                {
+                    WassSuccees = false,
+                    Message = "Producto no existe"
+                };
+            }
+            for (int i = 0; i < imageDTO.Images.Count; i++)
+            {
+                //TODO: habilitar para blob storage la linea comentada
+                //if (!imageDTO.Images[i].StartsWith("https://"))
+                if (!imageDTO.Images[i].StartsWith("C:\\AppDesarrollo\\LocalStorage"))
+                {
+                    var photoProduct = Convert.FromBase64String(imageDTO.Images[i]);
+                    imageDTO.Images[i] = await _fileStorage.SaveFileAsync(photoProduct, ".jpg", "products");
+                    product.ProductImages!.Add(new ProductImage { Image = imageDTO.Images[i] });
+                }
+            }
+            _context.Update(product);
+            await _context.SaveChangesAsync();
+            return new ActionResponse<ImageDTO>
+            {
+                WassSuccees = true,
+                Result = imageDTO
+            };
+        }
+
+        public async Task<ActionResponse<ImageDTO>> RemoveLastImageAsync(ImageDTO imageDTO)
+        {
+            var product = await _context.Products
+            .Include(x => x.ProductImages)
+            .FirstOrDefaultAsync(x => x.Id == imageDTO.ProductId);
+            if (product == null)
+            {
+                return new ActionResponse<ImageDTO>
+                {
+                    WassSuccees = false,
+                    Message = "Producto no existe"
+                };
+            }
+            if (product.ProductImages is null || product.ProductImages.Count == 0)
+            {
+                return new ActionResponse<ImageDTO>
+                {
+                    WassSuccees = true,
+
+                    Result = imageDTO
+                };
+            }
+            var lastImage = product.ProductImages.LastOrDefault();
+            await _fileStorage.RemoveFileAsync(lastImage!.Image, "products");
+            _context.ProductImages.Remove(lastImage);
+            await _context.SaveChangesAsync();
+            imageDTO.Images = product.ProductImages.Select(x => x.Image).ToList();
+            return new ActionResponse<ImageDTO>
+            {
+                WassSuccees = true,
+                Result = imageDTO
+            };
+        }
     }
 }
-   

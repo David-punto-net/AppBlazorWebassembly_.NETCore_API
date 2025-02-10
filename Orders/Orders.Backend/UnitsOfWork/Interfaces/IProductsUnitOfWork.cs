@@ -6,6 +6,7 @@ namespace Orders.Backend.UnitsOfWork.Interfaces
 {
     public interface IProductsUnitOfWork
     {
+        Task<ActionResponse<Product>> DeleteAsync(int id);
         Task<ActionResponse<Product>> GetAsync(int id);
 
         Task<ActionResponse<IEnumerable<Product>>> GetAsync(PaginationDTO pagination);
@@ -19,5 +20,8 @@ namespace Orders.Backend.UnitsOfWork.Interfaces
         Task<ActionResponse<Product>> AddFullAsync(ProductDTO productDTO);
 
         Task<ActionResponse<Product>> UpdateFullAsync(ProductDTO productDTO);
+
+        Task<ActionResponse<ImageDTO>> AddImageAsync(ImageDTO imageDTO);
+        Task<ActionResponse<ImageDTO>> RemoveLastImageAsync(ImageDTO imageDTO);
     }
 }

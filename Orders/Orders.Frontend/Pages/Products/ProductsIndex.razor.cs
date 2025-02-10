@@ -107,12 +107,12 @@ namespace Orders.Frontend.Pages.Products
             };
         }
 
-        private async Task DeleteAsync(Product category)
+        private async Task DeleteAsync(Product product)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
-                Text = $"¿Estas seguro de borrar el producto: {category.Name}?",
+                Text = $"¿Estas seguro de borrar el producto: {product.Name}?",
                 Icon = SweetAlertIcon.Warning,
                 ShowCancelButton = true
             });
@@ -122,7 +122,7 @@ namespace Orders.Frontend.Pages.Products
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<Product>($"/api/products/{category.Id}");
+            var responseHttp = await Repository.DeleteAsync<Product>($"/api/products/{product.Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
