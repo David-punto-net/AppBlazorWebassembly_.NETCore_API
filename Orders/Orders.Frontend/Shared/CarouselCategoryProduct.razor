@@ -1,0 +1,19 @@
+﻿<div class="carousel-container">
+
+    <button class="nav-button" @onclick="ShowPrevious" disabled="@(currentIndex == 0)">&lt;</button>
+
+    <div class="cards-wrapper">
+        @foreach (var card in DisplayedCards)
+        {
+            <Card Title="@card.Title"
+                  Description="@card.Description"
+                  ImageUrl="@card.ImageUrl"
+                  Price="@card.Price"
+                  Discount="@card.Discount"
+                  Id="@card.Id" />
+        }
+    </div>
+
+    <button class="nav-button" @onclick="ShowNext" disabled="@(currentIndex + CardsPerPage >= Cards.Count)">&gt;</button>
+
+</div>

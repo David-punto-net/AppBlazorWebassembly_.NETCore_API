@@ -1,8 +1,54 @@
-﻿namespace Orders.Backend.Helpers;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+
+namespace Orders.Backend.Helpers;
 
 public class FileStorageLocal : IFileStorage
 {
-    private readonly string _localStoragePath;
+    private readonly Cloudinary _cloudinary;
+
+    public FileStorageLocal(IConfiguration configuration)
+    {
+        var cloudinaryConfig = configuration.GetSection("Cloudinary");
+        var account = new Account(
+            cloudinaryConfig["CloudName"],
+            cloudinaryConfig["ApiKey"],
+            cloudinaryConfig["ApiSecret"]
+        );
+
+        _cloudinary = new Cloudinary(account);
+    }
+
+    public async Task RemoveFileAsync(string path, string containerName)
+    {
+
+        var publicId = Path.Combine(containerName,Path.GetFileNameWithoutExtension(path)).Replace("\\", "/");
+        var deletionParams = new DeletionParams(publicId);
+        await _cloudinary.DestroyAsync(deletionParams);
+
+    }
+
+    public async Task<string> SaveFileAsync(byte[] content, string extension, string containerName)
+    {
+        using (var stream = new MemoryStream(content))
+        {
+            var fileName = $"{Guid.NewGuid()}{extension}";
+            var uploadParams = new ImageUploadParams()
+            {
+                File = new FileDescription(fileName, stream),
+                AssetFolder = containerName,
+                PublicId = Path.Combine(containerName, Path.GetFileNameWithoutExtension(fileName)).Replace("\\", "/")
+            };
+
+            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+            return uploadResult.SecureUrl.ToString();
+        }
+    }
+}
+
+
+/*
+  private readonly string _localStoragePath;
 
     public FileStorageLocal(IConfiguration configuration)
     {
@@ -36,4 +82,4 @@ public class FileStorageLocal : IFileStorage
 
         return filePath.ToString();
     }
-}
+*/

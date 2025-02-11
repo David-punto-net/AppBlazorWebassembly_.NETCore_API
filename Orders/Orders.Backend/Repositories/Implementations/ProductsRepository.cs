@@ -65,7 +65,8 @@ namespace Orders.Backend.Repositories.Implementations
         {
             var queryable = _context.Products
                             .Include(x => x.ProductImages)
-                            .Include(x => x.ProductCategories)
+                            .Include(x => x.ProductCategories!)
+                            .ThenInclude(x => x.Category)
                             .AsQueryable();
 
             if (!string.IsNullOrEmpty(pagination.Filter))
@@ -260,9 +261,7 @@ namespace Orders.Backend.Repositories.Implementations
             }
             for (int i = 0; i < imageDTO.Images.Count; i++)
             {
-                //TODO: habilitar para blob storage la linea comentada
-                //if (!imageDTO.Images[i].StartsWith("https://"))
-                if (!imageDTO.Images[i].StartsWith("C:\\AppDesarrollo\\LocalStorage"))
+                if (!imageDTO.Images[i].StartsWith("https://"))
                 {
                     var photoProduct = Convert.FromBase64String(imageDTO.Images[i]);
                     imageDTO.Images[i] = await _fileStorage.SaveFileAsync(photoProduct, ".jpg", "products");

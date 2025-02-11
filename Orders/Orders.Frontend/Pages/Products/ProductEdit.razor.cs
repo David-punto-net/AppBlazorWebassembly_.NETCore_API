@@ -44,8 +44,7 @@ namespace Orders.Frontend.Pages.Products
                 ProductId = ProductId,
                 Images = productDTO.ProductImages!
             };
-            var httpActionResponse = await Repository.PostAsync<ImageDTO, ImageDTO>("/api/products/addImages",
-            imageDTO);
+            var httpActionResponse = await Repository.PostAsync<ImageDTO, ImageDTO>("/api/products/addImages",imageDTO);
             if (httpActionResponse.Error)
             {
                 var message = await httpActionResponse.GetErrorMessageAsync();
@@ -74,8 +73,7 @@ namespace Orders.Frontend.Pages.Products
                 ProductId = ProductId,
                 Images = productDTO.ProductImages!
             };
-            var httpActionResponse = await Repository.PostAsync<ImageDTO, ImageDTO>("/api/products/removeLastImage",
-            imageDTO);
+            var httpActionResponse = await Repository.PostAsync<ImageDTO, ImageDTO>("/api/products/removeLastImage",imageDTO);
             if (httpActionResponse.Error)
             {
                 var message = await httpActionResponse.GetErrorMessageAsync();

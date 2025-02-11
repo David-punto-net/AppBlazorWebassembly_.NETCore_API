@@ -1,12 +1,445 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+@if (Products is null)
+{
+    <Loading />
+}
+else
+{
 
-<AuthorizeView Roles="Admin">
-    <Authorized>
-        <p>Estas autenticado y autorizado, @context.User.Identity?.Name </p>
-    </Authorized>
-    <NotAuthorized>
-        <p>No estas autorizado</p>
-    </NotAuthorized>
-</AuthorizeView>
+    @foreach (var category in Categories!)
+    {
+
+        <h3> @category.Name</h3>
+
+        @foreach (var product in Products!.Where(a => a.ProductCategories!.Any(x => x.CategoryId == category.Id)))
+        {
+
+        }
+
+
+    }
+
+    <CarouselCategoryProduct Cards="@cards" />
+
+}
+
+
+
+
+
+
+
+@*
+@foreach (var category in Categories!)
+{
+
+    <h3> @category.Name</h3>
+
+    <div class="row row-cols-1 row-cols-md-4 g-4 mt-1">
+
+        @foreach (var product in Products!.Where(a => a.ProductCategories!.Any(x => x.CategoryId == category.Id)))
+        {
+
+
+            <div class="col">
+                <div class="card h-100">
+                    <div class="text-center zoom">
+                        <img src="@product.MainImage" style="height:150px; max-width:200px;" class="text-center"
+                             alt=@product.Name />
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-navy"> @product.Name</h5>
+                        <p class="card-text smfnt">@product.Description</p>
+                        <h5 class="text-muted">@($"{product.Price:C2}")</h5>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="/products/details/@product.Id" class="btn btn-sm btn-secondary">
+                            <i class="bi bi-info-circle" />
+                            Detalles
+                        </a>
+                        <button class="btn btn-sm btn-primary" @onclick=@(() => AddToCartAsync(product.Id))>
+                            <i class="bi bi-cart-plus" /> Agregar al Carro
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+    </div>
+
+
+}
+
+
+<div class="multiple-card-slider">
+        <div id="carouselExampleControls" class="carousel" data-bs-ride="false">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 1</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 2</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 3</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 4</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 5</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 6</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 7</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 8</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 9</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="multiple-card-slider">
+        <div id="carouselExampleControls2" class="carousel" data-bs-ride="false">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 1</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 2</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 3</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 4</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 5</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 6</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 7</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 8</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 9</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls2" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls2" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="multiple-card-slider">
+        <div id="carouselExampleControls3" class="carousel" data-bs-ride="false">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 1</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 2</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 3</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 4</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 5</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 6</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 7</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 8</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title 9</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of
+                                the card's content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls3" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls3" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+ *@
