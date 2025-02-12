@@ -8,11 +8,10 @@ namespace Orders.Shared.DTOs;
 
 public class CardDTO
 {
+    public int? Id { get; set; }
     public string? Title { get; set; }
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
     public decimal Price { get; set; }
-    public decimal Discount { get; set; }
-    public string? PaymentMethod { get; set; }
-    public string? Id { get; set; }
+
 }

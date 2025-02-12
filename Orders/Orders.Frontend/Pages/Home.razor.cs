@@ -12,10 +12,11 @@ public partial class Home
     [Inject] private IRepository Repository { get; set; } = null!;
     [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
     [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-    public List<Product>? Products { get; set; }
-    public List<Category>? Categories { get; set; }
 
     private List<CardDTO> cards = new();
+
+    private List<CategoriaDTO> categoriaDTO = new();
+    public List<Product>? Products { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -24,7 +25,6 @@ public partial class Home
 
     private async Task<bool> LoadAsync()
     {
-        //var url = $"api/products?page=0&recordsnumber=10";
         var url = $"api/products?page=0";
         var response = await Repository.GetAsync<List<Product>>(url);
         if (response.Error)
@@ -36,30 +36,46 @@ public partial class Home
 
         Products = response.Response;
 
-        Categories = Products!.SelectMany(x => x.ProductCategories!.Select(a => new Category
-        {
-            Id = a.Category!.Id,
-            Name = a.Category!.Name
-        }))
-        .DistinctBy(c => c.Id)
-        .ToList();
-
-        foreach (var product in Products!)
-        {
-            cards.Add(new CardDTO
-            {
-                Title = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                ImageUrl = product.MainImage,
-                Id = product.Id.ToString(),
-                Discount = 38
-            });
-        }
+        CardsCarrousel();
 
         return true;
     }
 
+    private void CardsCarrousel()
+    {
+        var categoriasUnicas = new Dictionary<int, CategoriaDTO>();
+
+        foreach (var product in Products!)
+        {
+            var card = new CardDTO
+            {
+                Id = product.Id,
+                Title = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                ImageUrl = product.MainImage
+            };
+
+            cards.Add(card);
+
+            foreach (var category in product.ProductCategories!)
+            {
+                if (!categoriasUnicas.ContainsKey(category.Category!.Id))
+                {
+                    categoriasUnicas.Add(category.Category!.Id, new CategoriaDTO
+                    {
+                        Id = category.Category!.Id,
+                        Name = category.Category!.Name,
+                        Productos = new List<CardDTO>()
+                    });
+                }
+
+                categoriasUnicas[category.Category!.Id].Productos.Add(card);
+            }
+        }
+
+        categoriaDTO.AddRange(categoriasUnicas.Values);
+    }
     private void AddToCartAsync(int productId)
     {
     }

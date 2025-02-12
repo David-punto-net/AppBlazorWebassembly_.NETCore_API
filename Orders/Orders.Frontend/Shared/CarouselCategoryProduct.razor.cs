@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Orders.Shared.DTOs;
+
 
 namespace Orders.Frontend.Shared;
 
@@ -10,6 +12,7 @@ public partial class CarouselCategoryProduct
 
     [Parameter] public List<CardDTO> Cards { get; set; } = new();
 
+
     private List<CardDTO> DisplayedCards => Cards
       .Skip(currentIndex)
       .Take(CardsPerPage)
@@ -17,6 +20,8 @@ public partial class CarouselCategoryProduct
 
     private void ShowNext()
     {
+
+
         if (currentIndex + CardsPerPage < Cards.Count)
         {
             currentIndex++;
@@ -25,9 +30,12 @@ public partial class CarouselCategoryProduct
 
     private void ShowPrevious()
     {
+
         if (currentIndex > 0)
         {
             currentIndex--;
         }
     }
+
+
 }
