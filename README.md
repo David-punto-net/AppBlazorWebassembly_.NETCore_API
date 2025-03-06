@@ -1,6 +1,6 @@
 # Sistema Web con .NET & Blazor
 
-**Aplicación** web desarrollada con **.NET 8 y Blazor**, diseñada para gestionar un sistema de ventas en línea. La aplicación permite la administración de productos, categorías, pedidos y usuarios, con funcionalidades avanzadas de seguridad y autenticación.
+**Aplicación** web desarrollada con **.NET 8 y Blazor**, diseñada para gestionar un sistema de ventas en línea. La aplicación permite la administración de productos, categorías, pedidos y usuarios, con funcionalidades avanzadas de seguridad y autenticación. El baken
 
 ## **Características Principales**
 - **Autenticación y Seguridad:**
@@ -37,16 +37,23 @@
   - Despliegue en **Azure**.
 
 ## **Tecnologías Utilizadas**
-- **.NET 8**: Framework principal para el desarrollo.
-- **Blazor WebAssembly**: Frontend moderno basado en C#.
-- **Entity Framework Core**: ORM para la gestión de base de datos.
-- **SQL Server**: Motor de base de datos utilizado.
-- **Swagger**: Documentación y pruebas de API.
-- **Bootstrap & Bootstrap Icons**: Diseño y estilos de la interfaz.
-- **SweetAlert2**: Alertas visuales y notificaciones.
-- **MSTest**: Pruebas unitarias.
-- **GitHub**: Repositorio de código fuente para control de versiones.
-- **Azure**: Plataforma de despliegue en la nube.
-- **JSON Web Tokens (JWT)** para autenticación segura en la API.
+**Backend:**
+- **ASP.NET Core (.NET 8) →** Framework principal para el desarrollo del backend.
+- **Entity Framework Core →** ORM para la gestión de base de datos.
+- **SQL Server →** Motor de base de datos utilizado.
+- **JWT (JSON Web Token) →** Implementación de autenticación basada en tokens.
+- **Swagger →** Documentación y pruebas de la API.
+- **Repository Pattern y Unit of Work →** Para la gestión eficiente de datos.
+- **MSTest →** Framework para pruebas unitarias.
+- **Azure →** Plataforma de despliegue en la nube.
+
+**Frontend:**
+- **Blazor WebAssembly →** Framework para el desarrollo del frontend en C#.
+- **Bootstrap & Bootstrap Icons →** Framework de diseño y librería de iconos.
+- **SweetAlert2 →** Alertas visuales y notificaciones.
+- **HttpClient →** Para la comunicación con el backend.
+- **Blazor Components →** Uso de componentes reutilizables para formularios y listas dinámicas.
+
+**El proyecto combina Blazor en el frontend con ASP.NET Core en el backend, ofreciendo una solución moderna y escalable.**
 
 
