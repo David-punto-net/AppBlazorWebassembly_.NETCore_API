@@ -49,6 +49,4 @@
 - **Azure**: Plataforma de despliegue en la nube.
 - **JSON Web Tokens (JWT)** para autenticación segura en la API.
 
----
 
-Si necesitas ajustes o más detalles, dime y lo modifico.
