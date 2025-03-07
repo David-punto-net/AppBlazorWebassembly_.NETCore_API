@@ -12,7 +12,7 @@
   - Autenticación con JWT: Implementación de JSON Web Tokens (JWT) para autenticación segura en la API.
 
 - **Gestión de Datos:**
-  - CRUD de países, estados y ciudades con integración de datos externos.
+  - CRUD de países, regiones y ciudades con integración de datos externos.
   - CRUD de categorías y productos con múltiples imágenes.
   - Implementación de paginación y filtros en las vistas.
 
