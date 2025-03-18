@@ -54,6 +54,5 @@
   - Uso de **Seeders** para poblar la base de datos con datos iniciales.
   - Despliegue en **Azure**.
 
-**El proyecto combina Blazor en el frontend con ASP.NET Core en el backend, ofreciendo una solución moderna y escalable.**
 
 
