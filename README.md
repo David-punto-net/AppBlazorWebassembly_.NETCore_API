@@ -54,5 +54,21 @@
   - Uso de **Seeders** para poblar la base de datos con datos iniciales.
   - Despliegue en **Azure**.
 
+![image](https://github.com/user-attachments/assets/05c6ec00-c6a9-40f5-b5e1-f4ca11c2a70f)
+
+![image](https://github.com/user-attachments/assets/1c0538c0-b291-4d18-953d-7a9b070a3ef6)
+
+![image](https://github.com/user-attachments/assets/96b03ee2-ac21-4984-99d7-49df1a163753)
+
+![image](https://github.com/user-attachments/assets/b450aa74-6932-4ef5-91ed-58ab9f3be6fd)
+
+![image](https://github.com/user-attachments/assets/1697b22d-1c48-4a89-b7b3-b6c9ae170f49)
+
+![image](https://github.com/user-attachments/assets/fbc946b2-189b-48ae-859b-1d986f43567f)
+
+![image](https://github.com/user-attachments/assets/6efa8ccf-7ec7-4922-847a-cda8f31578bc)
+
+![image](https://github.com/user-attachments/assets/51209105-6623-419a-a047-dbc3ff99cc58)
+
 
 
