@@ -2,6 +2,21 @@
 
 **Aplicación** web desarrollada con **.NET 8, Blazor WebAssembly y una API RESTful en ASP.NET Core.**. La aplicación permite la administración de productos, categorías, pedidos y usuarios, con funcionalidades avanzadas de seguridad y autenticación. 
 
+🛠️ Tecnologías Utilizadas
+Backend: ASP.NET Core con API RESTful y Entity Framework Core (Code First).
+Frontend: Blazor WebAssembly con componentes reutilizables.
+Base de Datos: SQL Server.
+Seguridad: Autenticación con JWT, recuperación de contraseña y confirmación de email.
+Almacenamiento de Imágenes: Manejo de archivos para productos y usuarios.
+Optimización: Paginación, filtros dinámicos y carga de datos desde fuentes externas.
+Despliegue: Configurado para Azure y uso en equipo con GitHub.
+🔗 Funcionalidades Clave
+✅ API RESTful con endpoints para CRUD de productos, pedidos, usuarios y categorías.
+✅ Carrito de compras con gestión de productos y procesamiento de pedidos.
+✅ Panel de administración para gestionar categorías, países y estados.
+✅ Sistema de autenticación con login, registro y recuperación de contraseña.
+✅ Soporte para múltiples imágenes en productos y perfiles de usuario.
+
 ## **Características Principales**
 - **Autenticación y Seguridad:**
   - Registro, login y logout de usuarios.
