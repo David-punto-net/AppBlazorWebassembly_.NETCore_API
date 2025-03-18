@@ -1,6 +1,6 @@
-# Sistema Web con ASP.NET Core & Blazor
+# Sistema Web en ASP.NET Core & Blazor WebAssembly
 
-**Aplicación** web desarrollada con **.NET 8, ASP.NET Core y Blazor**, diseñada para gestionar un sistema de ventas en línea. La aplicación permite la administración de productos, categorías, pedidos y usuarios, con funcionalidades avanzadas de seguridad y autenticación. 
+**Aplicación** web desarrollada con ** .NET 8, Blazor WebAssembly y una API RESTful en ASP.NET Core.**, diseñada para gestionar un sistema de ventas en línea. La aplicación permite la administración de productos, categorías, pedidos y usuarios, con funcionalidades avanzadas de seguridad y autenticación. 
 
 ## **Características Principales**
 - **Autenticación y Seguridad:**
