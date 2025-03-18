@@ -1,29 +1,22 @@
-export function initialize(dotNetHelper, element) {
-    const resizeObserver = new ResizeObserver(() => {
-        dotNetHelper.invokeMethodAsync('UpdateItemsPerPage');
+export function init(dotNetRef, element) {
+    const observer = new ResizeObserver(entries => {
+        const width = entries[0].contentRect.width;
+        let itemsPerPage = 1;
+
+        if (width >= 1300) itemsPerPage = 6; 
+        else if (width >= 1000) itemsPerPage = 5; 
+        else if (width >= 975) itemsPerPage = 4; 
+        else if (width >= 775) itemsPerPage = 3; 
+        else if (width >= 590) itemsPerPage = 2; 
+
+        dotNetRef.invokeMethodAsync('UpdateItemsPerPage', itemsPerPage);
     });
 
-    resizeObserver.observe(element);
-
-    element.addEventListener('transitionend', () => {
-        dotNetHelper.invokeMethodAsync('HandleTransitionEnd');
-    });
+    observer.observe(element);
 
     return {
         dispose: () => {
-            resizeObserver.disconnect();
-            element.removeEventListener('transitionend');
+            observer.unobserve(element);
         }
     };
 }
-
-export function resetPosition(element, translateX) {
-    element.style.transition = 'none';
-    element.style.transform = `translateX(-${translateX}%)`;
-    void element.offsetHeight; // Trigger reflow
-    element.style.transition = '';
-}
-
-export function getWindowWidth() {
-    return window.innerWidth;
-} crollCarousel;

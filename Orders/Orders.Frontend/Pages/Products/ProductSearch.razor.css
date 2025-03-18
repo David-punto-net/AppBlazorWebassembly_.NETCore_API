@@ -1,0 +1,13 @@
+﻿.contenedor {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 12px;
+}
+
+.navigation {
+    max-width: 1000px;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    padding: 0 12px;
+    /*padding: 6px;*/
+}

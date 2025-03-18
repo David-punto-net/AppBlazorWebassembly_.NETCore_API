@@ -1,7 +1,8 @@
-﻿
+﻿<div class="col">
+    <FilterGrid PlaceHolder="Buscar Productos..." CallBack="FilterCallback" />
+</div>
 <AuthorizeView>
     <Authorized>
-
         <span class=" d-flex align-items-center">
             Hola,<a href="EditUser" class="nav-link btn btn-link">@context.User.Identity!.Name</a>
         </span>

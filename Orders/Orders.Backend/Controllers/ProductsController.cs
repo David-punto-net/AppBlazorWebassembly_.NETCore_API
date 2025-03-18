@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Orders.Backend.UnitsOfWork.Implementations;
 using Orders.Backend.UnitsOfWork.Interfaces;
 using Orders.Shared.DTOs;
 using Orders.Shared.Entities;
@@ -36,6 +37,30 @@ namespace Orders.Backend.Controllers
         public override async Task<IActionResult> GetTotalRecordAsync([FromQuery] PaginationDTO pagination)
         {
             var action = await _productsUnitOfWork.GetTotalRecordAsync(pagination);
+            if (action.WassSuccees)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("pagination")]
+        public override async Task<IActionResult> GetPaginationAsync(PaginationDTO pagination)
+        {
+            var action = await _productsUnitOfWork.GetPaginationAsync(pagination);
+            if (action.WassSuccees)
+            {
+                return Ok(action.Result);
+            }
+            return BadRequest();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("totalPages")]
+        public override async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
+        {
+            var action = await _productsUnitOfWork.GetTotalPagesAsync(pagination);
             if (action.WassSuccees)
             {
                 return Ok(action.Result);

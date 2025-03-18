@@ -29,5 +29,9 @@ namespace Orders.Backend.UnitsOfWork.Implementations
         public async Task<ActionResponse<ImageDTO>> AddImageAsync(ImageDTO imageDTO) => await _productsRepository.AddImageAsync(imageDTO);
         public async Task<ActionResponse<ImageDTO>> RemoveLastImageAsync(ImageDTO imageDTO) => await _productsRepository.RemoveLastImageAsync(imageDTO);
 
+        public override async Task<ActionResponse<IEnumerable<Product>>> GetPaginationAsync(PaginationDTO pagination) => await _productsRepository.GetPaginationAsync(pagination);
+
+        public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination) => await _productsRepository.GetTotalPagesAsync(pagination);
+
     }
 }

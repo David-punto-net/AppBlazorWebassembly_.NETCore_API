@@ -1,19 +1,28 @@
-﻿<div class="carousel-container">
+﻿<div class="container" @onmouseleave="OnMouseLeave" @onmouseenter="OnMouseEnter">
 
-    <button class="nav-button" @onclick="ShowPrevious" disabled="@(currentIndex == 0)">&lt;</button>
-
-
-    <div class="cards-wrapper">
-
-        @foreach (var card in DisplayedCards)
+    <div id="@carousel" class="carousel" @onmousedown="OnMouseDown" @onmousemove="OnMouseMove" @onmouseup="OnMouseUp"
+         @ontouchstart="OnTouchStart" @ontouchmove="OnTouchMove" @ontouchend="OnMouseUp">
+        
+        @foreach (var card in Cards)
         {
-            <Card Title="@card.Title"
-                  Description="@card.Description"
-                  ImageUrl="@card.ImageUrl"
-                  Price="@card.Price" />
+                <Card Title="@card.Title"
+                      Description="@card.Description"
+                      ImageUrl="@card.ImageUrl"
+                      Price="@card.Price" />
         }
+
     </div>
 
-    <button class="nav-button" @onclick="ShowNext" disabled="@(currentIndex + CardsPerPage >= Cards.Count)">&gt;</button>
+    <button class="btn btn-primary position-absolute top-50 start-0 translate-middle-y nav-button"
+            @onclick="ShowPrevious"
+            disabled="@(CurrentScrollPosition == 0)">
+        <i class="bi bi-chevron-left"></i>
+    </button>
+
+    <button class="btn btn-primary position-absolute top-50 end-0 translate-middle-y nav-button"
+            @onclick="ShowNext" 
+            disabled="@(PromMaxScrollPosition == 0)">
+        <i class="bi bi-chevron-right"></i>
+    </button>
+
 </div>
-  

@@ -1,0 +1,30 @@
+﻿<div class="pagination-wrapper">
+    @if (totalPages >= 1)
+    {
+        <div class="pagination">
+            <button class="pagination-button" @onclick="() => NavigateToPage(1)" disabled="@(CurrentPage == 1)">
+                &lt;&lt;
+            </button>
+            <button class="pagination-button" @onclick="() => NavigateToPage(CurrentPage - 1)" disabled="@(CurrentPage == 1)">
+                &lt;
+            </button>
+
+            @foreach (var pagina in GetVisiblePages())
+            {
+                <button class="pagination-button @(pagina == CurrentPage ? "active" : "")"
+                        @onclick="() => NavigateToPage(pagina)">
+                    @pagina
+                </button>
+            }
+
+            <button class="pagination-button" @onclick="() => NavigateToPage(CurrentPage + 1)"
+                    disabled="@(CurrentPage == totalPages)">
+                &gt;
+            </button>
+            <button class="pagination-button" @onclick="() => NavigateToPage(totalPages)"
+                    disabled="@(CurrentPage == totalPages)">
+                &gt;&gt;
+            </button>
+        </div>
+    }
+</div>

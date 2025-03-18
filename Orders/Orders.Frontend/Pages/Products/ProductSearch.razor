@@ -1,0 +1,60 @@
+﻿@page "/products/search/{Filter?}"
+
+
+@if (Products is null)
+{
+    <Loading />
+}
+else
+{
+    <div class="navigation mb-3">
+        <div class="row justify-content-between align-items-center">
+            <div class="col center">
+
+                <PaginationView TotalItems="@totalItems"
+                                ItemsPerPage="@RecordsNumber"
+                                CurrentPage="@currentPage"
+                                CurrentPageChanged="@SelectedPageAsync" />
+            </div>
+        </div>
+    </div>
+
+    <div class="contenedor mb-3">
+        <div class="row row-cols-1 row-cols-md-4 g-4 mt-1">
+            @foreach (var card in cards)
+
+            {
+                <div class="col">
+
+                    <Card Title="@card.Title"
+                          Description="@card.Description"
+                          ImageUrl="@card.ImageUrl"
+                          Price="@card.Price" />
+
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="navigation mb-3">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-auto">
+                Total de productos: @totalItems
+            </div>
+            <div class="col center">
+
+                <PaginationView TotalItems="@totalItems"
+                                ItemsPerPage="@RecordsNumber"
+                                CurrentPage="@currentPage"
+                                CurrentPageChanged="@SelectedPageAsync" />
+            </div>
+            <div class="col-auto">
+                <PageSizeChooser ItemsPerPage="@RecordsNumber"
+                                 Options="@pageSizeOptions"
+                                 SelectedValueChanged="@OnPageSizeChanged"
+                                 Titulo="Productos por página" />
+            </div>
+        </div>
+    </div>
+
+}

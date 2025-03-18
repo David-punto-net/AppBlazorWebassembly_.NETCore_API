@@ -83,6 +83,8 @@ builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
 builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
 builder.Services.AddScoped<IProductsUnitOfWork, ProductsUnitOfWork>();
 
+builder.Services.AddScoped<ITransbankService, TransbankService>();
+
 
 builder.Services.AddScoped<IMailHelper, MailHelper>();
 

@@ -82,6 +82,29 @@ namespace Orders.Backend.Repositories.Implementations
             };
         }
 
+        public override async Task<ActionResponse<IEnumerable<Product>>> GetPaginationAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.Products
+                                     .Include(x => x.ProductImages)
+                                     .Include(x => x.ProductCategories!)
+                                     .ThenInclude(x => x.Category)
+                                    .AsQueryable();
+
+            if (!string.IsNullOrEmpty(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
+            return new ActionResponse<IEnumerable<Product>>()
+            {
+                WassSuccees = true,
+                Result = await queryable
+                                .OrderBy(x => x.Name)
+                                .Paginate(pagination)
+                                .ToListAsync()
+            };
+        }
+
         public override async Task<ActionResponse<int>> GetTotalRecordAsync(PaginationDTO pagination)
         {
             var queryable = _context.Products.AsQueryable();
@@ -97,6 +120,25 @@ namespace Orders.Backend.Repositories.Implementations
             {
                 WassSuccees = true,
                 Result = count
+            };
+        }
+
+        public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.Products.AsQueryable();
+
+            if (!string.IsNullOrEmpty(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
+            double count = await queryable.CountAsync();
+            int totalPages = (int)Math.Ceiling(count / pagination.RecordsNumber);
+
+            return new ActionResponse<int>
+            {
+                WassSuccees = true,
+                Result = totalPages
             };
         }
 

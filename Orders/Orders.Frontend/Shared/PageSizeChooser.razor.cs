@@ -7,6 +7,7 @@ namespace Orders.Frontend.Shared
         [Parameter] public int ItemsPerPage { get; set; }
         [Parameter] public List<int> Options { get; set; } = new();
         [Parameter] public EventCallback<int> SelectedValueChanged { get; set; }
+        [Parameter] public string Titulo { get; set; } = "Items por página";
 
         private async Task HandleChange(ChangeEventArgs e)
         {

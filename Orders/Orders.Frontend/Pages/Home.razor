@@ -8,8 +8,10 @@ else
 {
     @foreach (var category in categoriaDTO)
     {
-        <h3 style="text-align:center"> @category.Name</h3>
+        <div class="card-title text-center">
+            <h3>@category.Name</h3>
+        </div>
 
-          <CarouselCategoryProduct Cards="@category.Productos" />
+         <CarouselCategoryProduct Cards="@category.Productos" />
     }
 }

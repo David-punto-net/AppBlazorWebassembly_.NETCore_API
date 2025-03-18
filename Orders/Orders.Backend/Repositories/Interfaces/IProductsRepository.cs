@@ -13,9 +13,8 @@ namespace Orders.Backend.Repositories.Interfaces
 
         Task<ActionResponse<int>> GetTotalRecordAsync(PaginationDTO pagination);
 
-        //Task<ActionResponse<IEnumerable<Product>>> GetAsync(PaginationDTO pagination);
-
-        //Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);
+        Task<ActionResponse<IEnumerable<Product>>> GetPaginationAsync(PaginationDTO pagination);
+        Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);
 
         Task<ActionResponse<Product>> AddFullAsync(ProductDTO productDTO);
 

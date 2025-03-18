@@ -25,7 +25,7 @@ public partial class Home
 
     private async Task<bool> LoadAsync()
     {
-        var url = $"api/products?page=0";
+        var url = $"api/products?page=0&recordsnumber=20";
         var response = await Repository.GetAsync<List<Product>>(url);
         if (response.Error)
         {
