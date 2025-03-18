@@ -2,20 +2,23 @@
 
 **Aplicación** web desarrollada con **.NET 8, Blazor WebAssembly y una API RESTful en ASP.NET Core.**. La aplicación permite la administración de productos, categorías, pedidos y usuarios, con funcionalidades avanzadas de seguridad y autenticación. 
 
-🛠️ Tecnologías Utilizadas
-Backend: ASP.NET Core con API RESTful y Entity Framework Core (Code First).
-Frontend: Blazor WebAssembly con componentes reutilizables.
-Base de Datos: SQL Server.
-Seguridad: Autenticación con JWT, recuperación de contraseña y confirmación de email.
-Almacenamiento de Imágenes: Manejo de archivos para productos y usuarios.
-Optimización: Paginación, filtros dinámicos y carga de datos desde fuentes externas.
-Despliegue: Configurado para Azure y uso en equipo con GitHub.
-🔗 Funcionalidades Clave
-✅ API RESTful con endpoints para CRUD de productos, pedidos, usuarios y categorías.
-✅ Carrito de compras con gestión de productos y procesamiento de pedidos.
-✅ Panel de administración para gestionar categorías, países y estados.
-✅ Sistema de autenticación con login, registro y recuperación de contraseña.
-✅ Soporte para múltiples imágenes en productos y perfiles de usuario.
+## 🛠️ Tecnologías Utilizadas  
+- **Backend:** ASP.NET Core(.NET8) con API RESTful y Entity Framework Core (Code First).  
+- **Frontend:** Blazor WebAssembly con componentes reutilizables.  
+- **Base de Datos:** SQL Server.  
+- **Seguridad:** Autenticación con JWT(JSON Web Token), recuperación de contraseña y confirmación de email.  
+- **Almacenamiento de Imágenes:** Manejo de archivos para productos y usuarios.  
+- **Optimización:** Paginación, filtros dinámicos y carga de datos desde fuentes externas.
+- **Repository Pattern y Unit of Work** Para la gestión eficiente de datos.
+- **MSTest** Framework para pruebas unitarias.
+- **Despliegue:** Configurado para Azure y uso en equipo con GitHub.  
+
+## 🔗 Funcionalidades Clave  
+✅ **API RESTful** con endpoints para CRUD de productos, pedidos, usuarios y categorías.  
+✅ **Carrito de compras** con gestión de productos y procesamiento de pedidos.  
+✅ **Panel de administración** para gestionar categorías, países y estados.  
+✅ **Sistema de autenticación** con login, registro y recuperación de contraseña.  
+✅ **Soporte para múltiples imágenes** en productos y perfiles de usuario.  
 
 ## **Características Principales**
 - **Autenticación y Seguridad:**
@@ -50,24 +53,6 @@ Despliegue: Configurado para Azure y uso en equipo con GitHub.
   - Configuración del entorno de desarrollo con **Entity Framework Core Code First**.
   - Uso de **Seeders** para poblar la base de datos con datos iniciales.
   - Despliegue en **Azure**.
-
-## **Tecnologías Utilizadas**
-**Backend:**
-- **ASP.NET Core (.NET 8) →** Framework principal para el desarrollo del backend.
-- **Entity Framework Core →** ORM para la gestión de base de datos.
-- **SQL Server →** Motor de base de datos utilizado.
-- **JWT (JSON Web Token) →** Implementación de autenticación basada en tokens.
-- **Swagger →** Documentación y pruebas de la API.
-- **Repository Pattern y Unit of Work →** Para la gestión eficiente de datos.
-- **MSTest →** Framework para pruebas unitarias.
-- **Azure →** Plataforma de despliegue en la nube.
-
-**Frontend:**
-- **Blazor WebAssembly →** Framework para el desarrollo del frontend en C#.
-- **Bootstrap & Bootstrap Icons →** Framework de diseño y librería de iconos.
-- **SweetAlert2 →** Alertas visuales y notificaciones.
-- **HttpClient →** Para la comunicación con el backend.
-- **Blazor Components →** Uso de componentes reutilizables para formularios y listas dinámicas.
 
 **El proyecto combina Blazor en el frontend con ASP.NET Core en el backend, ofreciendo una solución moderna y escalable.**
 
