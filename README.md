@@ -11,7 +11,6 @@
 - **Optimización:** Paginación, filtros dinámicos y carga de datos desde fuentes externas.
 - **Repository Pattern y Unit of Work** Para la gestión eficiente de datos.
 - **MSTest** Framework para pruebas unitarias.
-- **Despliegue:** Configurado para Azure y uso en equipo con GitHub.  
 
 ## 🔗 Funcionalidades Clave  
 ✅ **API RESTful** con endpoints para CRUD de productos, pedidos, usuarios y categorías.  
@@ -48,11 +47,6 @@
   - Uso de **componentes Blazor reutilizables** para formularios y listas.
   - Implementación del **patrón Repository y Unit of Work** para acceso a datos.
   - CRUD genérico para reducir código duplicado.
-
-- **Despliegue y Configuración:**
-  - Configuración del entorno de desarrollo con **Entity Framework Core Code First**.
-  - Uso de **Seeders** para poblar la base de datos con datos iniciales.
-  - Despliegue en **Azure**.
 
 ![image](https://github.com/user-attachments/assets/05c6ec00-c6a9-40f5-b5e1-f4ca11c2a70f)
 
